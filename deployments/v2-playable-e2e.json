@@ -1,0 +1,209 @@
+{
+  "version": 2,
+  "chainId": 50312,
+  "registry": "0x7c0dd0d2aea196118dbca546bdc2c6ecf541dd1e",
+  "status": "complete",
+  "transactions": [
+    {
+      "hash": "0x47f7d1166cd82dd4da088b333c727ff94f27d471a6f9e69618cf3ba112b3b8fc",
+      "label": "Schedule playable event",
+      "status": "success",
+      "block": "480208709"
+    },
+    {
+      "hash": "0x518311863c9b06009ea5429498c5ba35d30f060299e8842d0519e3df8fc5831f",
+      "label": "Fund player 1",
+      "status": "success",
+      "block": "480208765"
+    },
+    {
+      "hash": "0x8b9796a494baa735c881113cb62d81ca5a38884df11109a0ad11dddab5b6a1d6",
+      "label": "Approve player 1",
+      "status": "success",
+      "block": "480208814"
+    },
+    {
+      "hash": "0xb04a131b29010aa4b35bcbd2c101d1700e8892cfb3e10c8091b6b187a37bca07",
+      "label": "Enter player 1",
+      "status": "success",
+      "block": "480208863"
+    },
+    {
+      "hash": "0x3954007da60a8f2c4259a8e812cd4dfe087bbd183b3d3e5b8202c6b4703433ad",
+      "label": "Fund player 2",
+      "status": "success",
+      "block": "480208916"
+    },
+    {
+      "hash": "0x0a8c3d92d087bb4dcf937f68505b02b7497444908fcaabdd598f52073d40e107",
+      "label": "Approve player 2",
+      "status": "success",
+      "block": "480208965"
+    },
+    {
+      "hash": "0x8a89ece32ae170fc4254dc0ff77c976e6e4fa6a27bef924cf4b7400e0896deac",
+      "label": "Enter player 2",
+      "status": "success",
+      "block": "480209014"
+    },
+    {
+      "hash": "0x9e32bbf78e32b6c46460dddcad9db8d38e4b999e566766020f0e247e570893eb",
+      "label": "Trade player 1",
+      "status": "success",
+      "block": "480210749"
+    },
+    {
+      "hash": "0xaae020b76834ae5690138ed31cdb89420a577c4293f5a006fc4491376ad9ef5f",
+      "label": "Trade player 2",
+      "status": "success",
+      "block": "480211483"
+    }
+  ],
+  "completedSteps": [
+    "Schedule playable event",
+    "Fund player 1",
+    "Approve player 1",
+    "Enter player 1",
+    "Fund player 2",
+    "Approve player 2",
+    "Enter player 2",
+    "Trade player 1",
+    "Trade player 2"
+  ],
+  "match": 6,
+  "start": "1788594168",
+  "duration": 3600,
+  "marketCandidate": "0x0000000000000000000000000000000000000000000000000000000000013fc6",
+  "players": [
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "vault": "0xA2e7A6A4bD70DF2D9fCef4621Ea3309895A5AFC7",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 1,
+      "prizeClaimed": true,
+      "prize": "4000000"
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "vault": "0x51A295a1d51f78b6AE27Af2170248Ed200F66815",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 2,
+      "prizeClaimed": true,
+      "prize": "0"
+    }
+  ],
+  "operator": {
+    "lastRun": 1788595307780,
+    "lastSuccess": 1788595250865,
+    "error": "",
+    "pending": null,
+    "cursor": 6,
+    "day": "2026-09-05",
+    "spent": "19536534000000000",
+    "log": [
+      {
+        "time": 1788595250865,
+        "label": "Pay entrants · royale 6",
+        "hash": "0xd50a8e31495fe5a01d36a8f44131b99729868dd6f2effe464eebff243622b44d",
+        "status": "success"
+      },
+      {
+        "time": 1788595225164,
+        "label": "Settle oracle result · royale 6",
+        "hash": "0xb816bfb08ca3ea6bd112923955267f07a4d889fcb232ea860c88259e7f9b127b",
+        "status": "success"
+      },
+      {
+        "time": 1788594207150,
+        "label": "Start scheduled event · royale 6",
+        "hash": "0x74a86593b2ddc0a3e06964203e72ef345f40e6f20f0e6e70d31ec9e08d94afec",
+        "status": "success"
+      },
+      {
+        "time": 1788593911151,
+        "label": "Pay entrants · royale 5",
+        "hash": "0xba1842597a5bbcc59216bb113534d9e70efc23392c685265338f568e7d3629f0",
+        "status": "success"
+      },
+      {
+        "time": 1788593886144,
+        "label": "Cancel unstarted event · royale 5",
+        "hash": "0x86c259880c0fe0c4f860e05bafa13873a8145d4eaff422dae981fee9533b3968",
+        "status": "success"
+      },
+      {
+        "time": 1788543854020,
+        "label": "Pay entrants · royale 4",
+        "hash": "0xadfba8352efa9b6123236212a50f81877234d3e815064628cfef83481be8092e",
+        "status": "success"
+      },
+      {
+        "time": 1788543824618,
+        "label": "Pay entrants · royale 3",
+        "hash": "0x187288b1eddc1687c180efbfb0ce884158132fef0830da9e080149dc14c44fd5",
+        "status": "success"
+      },
+      {
+        "time": 1788543797881,
+        "label": "Pay entrants · royale 1",
+        "hash": "0x04175228d3d6690c82bf3375bc49491e951556c7e177677bf4f2e604b5916151",
+        "status": "success"
+      },
+      {
+        "time": 1788543771085,
+        "label": "Cancel unstarted event · royale 4",
+        "hash": "0xd7f20dddbf77c967584621b330e5845b6a6c8d12d33e5b3e9ba72c3e53b8ee29",
+        "status": "success"
+      },
+      {
+        "time": 1788543743315,
+        "label": "Cancel unstarted event · royale 3",
+        "hash": "0x5045792d62371fd8d551d1ec8862cc3f57f276d5dacded1e85eb5277635ce3d1",
+        "status": "success"
+      },
+      {
+        "time": 1788543719051,
+        "label": "Cancel unstarted event · royale 2",
+        "hash": "0x5fd819e7460d000131cf1a249127db5c05b3703a51e716048402e788dd8e01f7",
+        "status": "success"
+      },
+      {
+        "time": 1788543694439,
+        "label": "Cancel unstarted event · royale 1",
+        "hash": "0xc2acf3b8c764c9f579a6d1868c367ed0aade4619bdf83c6548b873cc781b5f4f",
+        "status": "success"
+      }
+    ],
+    "issues": {
+      "1": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788543836150
+      },
+      "3": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788543863030
+      },
+      "4": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788543889480
+      },
+      "5": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788593950458
+      },
+      "6": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788595289331
+      }
+    },
+    "registry": "0x7c0dd0d2aea196118dbca546bdc2c6ecf541dd1e",
+    "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "sponsor": "0x24a43ad7e9318cf515867477bf9c489989dcc701",
+    "enabled": true,
+    "keeper": "0x7398556C34044B866102b32655F13B9a5b394Da0",
+    "managed": []
+  },
+  "finishedAt": "2026-09-05T08:00:36.206Z"
+}

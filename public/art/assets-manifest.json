@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "renderRecipe": {
+    "style": "rounded soft-vinyl 3D",
+    "camera": "three-quarter",
+    "lighting": "front-left key, cyan fill, violet rim",
+    "source": "OpenAI built-in image generation"
+  },
+  "assets": [
+    {
+      "id": "market-royale-wordmark-v2",
+      "kind": "brand",
+      "status": "ready",
+      "sourcePng": "/art/brand/market-royale-wordmark-v2.png",
+      "webp1x": "/art/brand/market-royale-wordmark-v2@1x.webp",
+      "webp2x": "/art/brand/market-royale-wordmark-v2@2x.webp",
+      "sourceSize": [1672, 941],
+      "dominantColor": "#6C2CE8",
+      "safeCrop": "contain; preserve the complete purple silhouette",
+      "alt": "Market Royale",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "crown-host-inviting",
+      "kind": "character",
+      "status": "ready",
+      "sourcePng": "/art/characters/crown-host-inviting.png",
+      "webp1x": "/art/characters/crown-host-inviting@1x.webp",
+      "webp2x": "/art/characters/crown-host-inviting@2x.webp",
+      "sourceSize": [1208, 1302],
+      "dominantColor": "#F7B500",
+      "safeCrop": "contain; preserve both hands and feet",
+      "alt": "Crown host inviting the player to join",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "royale-runner-nova",
+      "kind": "avatar",
+      "status": "ready",
+      "sourcePng": "/art/characters/royale-runner-nova.png",
+      "webp1x": "/art/characters/royale-runner-nova@1x.webp",
+      "webp2x": "/art/characters/royale-runner-nova@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#4B24C5",
+      "safeCrop": "square contain; circular crop may trim shoulders only",
+      "alt": "Nova, a violet and cyan Royale Runner",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "btc-coin",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/btc-coin.png",
+      "webp1x": "/art/objects/btc-coin@1x.webp",
+      "webp2x": "/art/objects/btc-coin@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#F5A000",
+      "safeCrop": "square contain",
+      "alt": "Bitcoin market coin",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "tusdc-stack",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/tusdc-stack.png",
+      "webp1x": "/art/objects/tusdc-stack@1x.webp",
+      "webp2x": "/art/objects/tusdc-stack@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#18BEEA",
+      "safeCrop": "square contain",
+      "alt": "Stack of test USDC chips",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "gem",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/gem.png",
+      "webp1x": "/art/objects/gem@1x.webp",
+      "webp2x": "/art/objects/gem@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#7134E8",
+      "safeCrop": "square contain",
+      "alt": "Violet and cyan reward gem",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "timer",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/timer.png",
+      "webp1x": "/art/objects/timer@1x.webp",
+      "webp2x": "/art/objects/timer@2x.webp",
+      "sourceSize": [1236, 1273],
+      "dominantColor": "#12BEE8",
+      "safeCrop": "contain; preserve top loop and side button",
+      "alt": "Tournament countdown timer",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "duel-swords",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/duel-swords.png",
+      "webp1x": "/art/objects/duel-swords@1x.webp",
+      "webp2x": "/art/objects/duel-swords@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#A77BEF",
+      "safeCrop": "square contain; preserve both blade tips and pommels",
+      "alt": "Two crossed duel swords",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "open-royale-shield",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/open-royale-shield.png",
+      "webp1x": "/art/objects/open-royale-shield@1x.webp",
+      "webp2x": "/art/objects/open-royale-shield@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#7427E8",
+      "safeCrop": "square contain",
+      "alt": "Open Royale three-player shield",
+      "owner": "Market Royale"
+    },
+    {
+      "id": "prize-stack",
+      "kind": "object",
+      "status": "ready",
+      "sourcePng": "/art/objects/prize-stack.png",
+      "webp1x": "/art/objects/prize-stack@1x.webp",
+      "webp2x": "/art/objects/prize-stack@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#EBA500",
+      "safeCrop": "square contain; preserve top gems and tray feet",
+      "alt": "Tournament prize stack of coins and gems",
+      "owner": "Market Royale"
+    }
+  ],
+  "drafts": [
+    {
+      "path": "/art/brand/market-royale-wordmark-opaque-draft.png",
+      "reason": "Superseded by the transparent market-royale-wordmark-v2 asset."
+    },
+    {
+      "path": "/art/source-sheets/core-objects-4x2-opaque-draft.png",
+      "reason": "Preserved art-direction sheet only. Individual transparent object files supersede it."
+    }
+  ]
+}

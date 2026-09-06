@@ -1,0 +1,57 @@
+{
+  "name": "market-royal",
+  "version": "1.0.0",
+  "description": "Market Royale — real Shannon testnet trading tournaments with automatic event recovery",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:contracts",
+    "compile:contracts": "node scripts/compile-contracts.mjs",
+    "test:contracts": "node --test tests/testnet.test.mjs",
+    "optimize:art": "node scripts/optimize-art.mjs",
+    "start": "next start --hostname 127.0.0.1",
+    "local": "node scripts/local.mjs",
+    "dev:keeper": "wrangler dev --config workers/wrangler.jsonc --ip 127.0.0.1 --port 8787",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview:cloudflare": "wrangler dev --config wrangler.jsonc --ip 127.0.0.1 --port 3001",
+    "setup:bots": "node --experimental-strip-types scripts/setup-training-bots.mjs",
+    "check": "npm run typecheck && npm run test:contracts && npm run build"
+  },
+  "keywords": [
+    "somnia",
+    "dreamdex",
+    "event-contracts",
+    "prediction-markets",
+    "onchain-game"
+  ],
+  "author": "",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "type": "module",
+  "dependencies": {
+    "@fontsource/fredoka": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@somnia-chain/markets-sdk": "0.28.1",
+    "lucide-react": "^1.40.0",
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "viem": "^2.56.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260904.1",
+    "@opennextjs/cloudflare": "^1.20.6",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "ganache": "^7.9.2",
+    "prettier": "^3.9.6",
+    "solc": "0.8.28",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.129.0"
+  },
+  "private": true
+}

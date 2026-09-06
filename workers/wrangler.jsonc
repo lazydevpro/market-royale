@@ -1,0 +1,41 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "market-royale-keeper",
+  "main": "keeper.ts",
+  "compatibility_date": "2026-09-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "EVENT_KEEPER",
+        "class_name": "EventKeeper",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["EventKeeper"],
+    },
+  ],
+  "triggers": {
+    "crons": ["* * * * *"],
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "vars": {
+    "LIQUIDITY_SPONSOR": "0x24a43ad7e9318cf515867477bf9c489989dcc701",
+    "ROYALE_ADDRESS": "0x4a17dc5e798e68060e6e8cadbf795531557880cd",
+    "PROGRESSION_ADDRESS": "0xaecf844569aba92494947bc4edf8e268c31b5c54",
+    "OFFICIAL_HOST": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "DAILY_GAS_BUDGET_STT": "10",
+    "GAS_FAUCET_ADDRESS": "0x751586985D47f49D0745991758ac2426E2f2d0a7",
+    "GAS_GRANT_STT": "1",
+    "FAUCET_DAILY_GRANTS": "50",
+    "BOT_BACKFILL": "1",
+    "BOT_ADDRESSES": "0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0,0x6C3162695B106F9F200057113bE7C60469C4A399,0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd,0xF5339652Db213CC08091d8C6e973640cae8e526b",
+    "BOT_JOIN_LEAD_SECONDS": "300",
+    "BOT_TARGET_PLAYERS": "4",
+  },
+}

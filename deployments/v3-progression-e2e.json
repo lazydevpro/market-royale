@@ -1,0 +1,39 @@
+{
+  "chainId": 50312,
+  "arena": "0x893a0e96b4ea20410f10856e2da2d0aee88a7439",
+  "progression": "0x8a51939488b69ba3031b9a949001d2ab2d4364d2",
+  "match": 2,
+  "status": "complete",
+  "transactions": [
+    {
+      "hash": "0xa4805d8c9e1a8ef315cc8fdf58f796237e2e2641e4338e5add21b106aa8eae29",
+      "label": "Mint rank 2",
+      "status": "success",
+      "block": "480267707",
+      "gasUsed": "1193878"
+    },
+    {
+      "hash": "0x4c26cf0337ce3259fc3bda8a4d40eb8d0d9bd83d2ab31d42b52815229e71b5ac",
+      "label": "Mint rank 1",
+      "status": "success",
+      "block": "480267763",
+      "gasUsed": "2424426"
+    },
+    {
+      "hash": "0xc5eb4fe8d86ccf006de89b9b0207bab63162228561c9d5b355d548484d2f1039",
+      "label": "Claim protected loss",
+      "status": "success",
+      "block": "480267809",
+      "gasUsed": "324880"
+    }
+  ],
+  "completedSteps": [
+    "Mint rank 2",
+    "Mint rank 1",
+    "Claim protected loss"
+  ],
+  "winner": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+  "loser": "0x083995C36A49726E8C232D4763638239d154f33B",
+  "reserve": "191000000",
+  "finishedAt": "2026-09-05T09:18:31.721Z"
+}

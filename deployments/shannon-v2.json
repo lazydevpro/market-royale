@@ -1,0 +1,31 @@
+{
+  "chainId": 50312,
+  "version": 2,
+  "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+  "keeper": "0x7398556C34044B866102b32655F13B9a5b394Da0",
+  "transactions": [
+    {
+      "hash": "0x529f83fdb812e38f4083c9d4fd2e6d5a22055d949049b64fd454c2722e0879a4",
+      "label": "Deploy MarketRoyale",
+      "status": "success",
+      "gasUsed": "90825769",
+      "block": "479678980"
+    },
+    {
+      "hash": "0x7a47f0c6c24de7caf4b795061724f029033c79058fa5af5774c8577b4e136035",
+      "label": "Deploy LiquiditySponsor",
+      "status": "success",
+      "gasUsed": "23850031",
+      "block": "479679015"
+    },
+    {
+      "hash": "0x9e41847ce0dc4d465d27ed0b59eefcc5aceecafe36651831c18361fc729eb90c",
+      "label": "Fund dedicated keeper gas",
+      "status": "success",
+      "gasUsed": "421000",
+      "block": "479679039"
+    }
+  ],
+  "arena": "0x7c0dd0d2aea196118dbca546bdc2c6ecf541dd1e",
+  "sponsor": "0x24a43ad7e9318cf515867477bf9c489989dcc701"
+}

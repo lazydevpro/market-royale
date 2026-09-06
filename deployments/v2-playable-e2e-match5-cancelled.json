@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "chainId": 50312,
+  "registry": "0x7c0dd0d2aea196118dbca546bdc2c6ecf541dd1e",
+  "status": "needs-attention",
+  "transactions": [
+    {
+      "hash": "0xad205415a1cab02eb3da677d7b16af39325351ecd121277fc72ab99dce3f68a4",
+      "label": "Schedule playable event",
+      "status": "success",
+      "block": "480201095"
+    },
+    {
+      "hash": "0xc6de2de81c123995fbe964bc3e4177a07e369849b5e7691626bb373d5f3dcf03",
+      "label": "Fund player 1",
+      "status": "success",
+      "block": "480201151"
+    },
+    {
+      "hash": "0x61b7291aecc4fac901e4b378c7bbb7d10a4dba17b2f8eb363890f0718e68ce43",
+      "label": "Approve player 1",
+      "status": "success",
+      "block": "480201257"
+    },
+    {
+      "hash": "0x056000fa1d18933d60a046e87923e2240ded55d4a46ac40777be6738611918dd",
+      "label": "Enter player 1",
+      "status": "success",
+      "block": "480202181"
+    },
+    {
+      "hash": "0xb96c56bdcc97645b3f676c738c6d1ca19742200d4b726b15d5c7dbae1bd40f4a",
+      "label": "Fund player 2",
+      "status": "success",
+      "block": "480202241"
+    },
+    {
+      "hash": "0x16240f7f4463e688962703fc9d3a0dc35982165142db4a9d59d8daeeead78851",
+      "label": "Approve player 2",
+      "status": "success",
+      "block": "480202889"
+    },
+    {
+      "hash": "0xa40d99acadfaef1737c3a10ffcec856119c96fb32989fcfa927f235a5d40229e",
+      "label": "Enter player 2",
+      "status": "success",
+      "block": "480202936"
+    }
+  ],
+  "completedSteps": [
+    "Schedule playable event",
+    "Fund player 1",
+    "Approve player 1",
+    "Enter player 1",
+    "Fund player 2",
+    "Approve player 2",
+    "Enter player 2"
+  ],
+  "match": 5,
+  "start": "1788593715",
+  "error": "Event cancelled with reason 2; refunds remain automated. Create a new journal for another attempt."
+}

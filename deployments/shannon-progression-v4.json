@@ -1,0 +1,65 @@
+{
+  "chainId": 50312,
+  "version": 4,
+  "arena": "0x4a17dc5e798e68060e6e8cadbf795531557880cd",
+  "predecessor": "0xe1af2b5fa9f8d25908c46925da186b80796e629f",
+  "deployer": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+  "transactions": [
+    {
+      "hash": "0xa41177a2a40d5067970c4188468eccb2a9948a13895918c390f52d546d59af7f",
+      "label": "Deploy progression V4",
+      "status": "success",
+      "block": "481206238",
+      "gasUsed": "46718623"
+    },
+    {
+      "hash": "0x097cc0b3b8e5930d19db6c643e2862a08b431f53c409909bf4f107c65bc8622f",
+      "label": "Mint V4 reserve",
+      "status": "success",
+      "block": "481206296",
+      "gasUsed": "53138"
+    },
+    {
+      "hash": "0x1768b29be8a3170181361ee814131aa507322891cbdce0faca427664efc61c59",
+      "label": "Approve V4 reserve",
+      "status": "success",
+      "block": "481207209",
+      "gasUsed": "259745"
+    },
+    {
+      "hash": "0x19fef63b87d151515bd8164465169449cdd40858edbcc598c3cfe378df37adf1",
+      "label": "Fund V4 reserve",
+      "status": "success",
+      "block": "481207264",
+      "gasUsed": "485161"
+    },
+    {
+      "hash": "0x34fbc9439647dc820e9c07b9e24f6d97c7b260424e5f6d190e34ea3423d4e3b4",
+      "label": "Verify test players",
+      "status": "success",
+      "block": "481207333",
+      "gasUsed": "1848470"
+    }
+  ],
+  "completedSteps": [
+    "Deploy progression V4",
+    "Mint V4 reserve",
+    "Approve V4 reserve",
+    "Fund V4 reserve",
+    "Verify test players"
+  ],
+  "progression": "0xaecf844569aba92494947bc4edf8e268c31b5c54",
+  "status": "ready",
+  "firstSeasonEnds": "1796461069",
+  "reserve": "192000000",
+  "eligiblePlayers": [
+    "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "0x083995C36A49726E8C232D4763638239d154f33B",
+    "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+    "0x7398556C34044B866102b32655F13B9a5b394Da0",
+    "0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0",
+    "0x6C3162695B106F9F200057113bE7C60469C4A399",
+    "0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd",
+    "0xF5339652Db213CC08091d8C6e973640cae8e526b"
+  ]
+}

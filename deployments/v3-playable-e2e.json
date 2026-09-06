@@ -1,0 +1,179 @@
+{
+  "version": 3,
+  "chainId": 50312,
+  "registry": "0x893a0e96b4ea20410f10856e2da2d0aee88a7439",
+  "status": "complete",
+  "transactions": [
+    {
+      "hash": "0x82c867b30aa05e7c5e6bbf14af666a812df9f19f6886561bbe4e343500b25847",
+      "label": "Schedule playable event",
+      "status": "success",
+      "block": "480250213"
+    },
+    {
+      "hash": "0x64ab232bd49e99b6d0ca59107bf074a880922080c4c5df5e3a4b7215b971496d",
+      "label": "Fund player 1",
+      "status": "success",
+      "block": "480250269"
+    },
+    {
+      "hash": "0xbdb541c5a38cd8bfa0ed126c0bbdecb3c07215bd950ef9c8f66441a418512ebf",
+      "label": "Approve player 1",
+      "status": "success",
+      "block": "480250344"
+    },
+    {
+      "hash": "0xf47d1bbd3a4fbfe934c45a9a980c91d52f4f1ca51f868da6db66f520386ffe69",
+      "label": "Enter player 1",
+      "status": "success",
+      "block": "480250412"
+    },
+    {
+      "hash": "0x9a4a590ee8ae3db0e8d0a412c2526575803afd2b7d37df050ee78420eb3730ac",
+      "label": "Fund player 2",
+      "status": "success",
+      "block": "480250487"
+    },
+    {
+      "hash": "0x700a1f166d1dcec0357f4054ff3a2800c04f56c34b6564e67884a420c7d56e79",
+      "label": "Approve player 2",
+      "status": "success",
+      "block": "480250560"
+    },
+    {
+      "hash": "0xcdda77d2a167f999c074baa113c45407f4502148afa72157426e2b5b3587c8a3",
+      "label": "Enter player 2",
+      "status": "success",
+      "block": "480250635"
+    },
+    {
+      "hash": "0x651768a75760f62465f1598639ceaab5903ad0f0cf06eecfdf122e21e67601c3",
+      "label": "Trade player 1",
+      "status": "success",
+      "block": "480252059"
+    },
+    {
+      "hash": "0xf0eda0d8c5441534a14f747b3aaa1f54941e498e679ecab6738433c75471cfee",
+      "label": "Trade player 2",
+      "status": "success",
+      "block": "480252112"
+    }
+  ],
+  "completedSteps": [
+    "Schedule playable event",
+    "Fund player 1",
+    "Approve player 1",
+    "Enter player 1",
+    "Fund player 2",
+    "Approve player 2",
+    "Enter player 2",
+    "Trade player 1",
+    "Trade player 2"
+  ],
+  "match": 2,
+  "start": "1788598230",
+  "duration": 3600,
+  "marketCandidate": "0x000000000000000000000000000000000000000000000000000000000001405a",
+  "players": [
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "vault": "0x0296D66A7c8706722298E1D5bd5B46676EEdF728",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 2,
+      "prizeClaimed": true,
+      "prize": "0"
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "vault": "0x06bF3d5d857F8Dc6FA15DB59cE3087F4A1d46bd2",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 1,
+      "prizeClaimed": true,
+      "prize": "4000000"
+    }
+  ],
+  "operator": {
+    "lastRun": 1788599842801,
+    "lastSuccess": 1788599845118,
+    "error": "",
+    "pending": {
+      "hash": "0xaabb9e2e5c156f8d2f9f612f40a3470a6aed0cd2c192d53e38446ca82d71d331",
+      "label": "Pay entrants · royale 2",
+      "createdAt": 1788599853319
+    },
+    "cursor": 2,
+    "day": "2026-09-05",
+    "spent": "44663202000000000",
+    "log": [
+      {
+        "time": 1788599845118,
+        "label": "Settle oracle result · royale 2",
+        "hash": "0x3e28f8db71350fa3f9a068f32eae54711e76294dae4eb3083b8b7f0baa61850a",
+        "status": "success"
+      },
+      {
+        "time": 1788599818979,
+        "label": "Recover expired treasury liquidity",
+        "hash": "0x829b8c2b9404ae35077ca590b5788f3c363c4fa36082f444563ac0f08fae9c6a",
+        "status": "success"
+      },
+      {
+        "time": 1788598329503,
+        "label": "Start scheduled event · royale 2",
+        "hash": "0xbd12485c68f1454029be01064c8ec16c34f370d0acdfdaa82cb027df291f1cd0",
+        "status": "success"
+      },
+      {
+        "time": 1788598298513,
+        "label": "Provide real treasury liquidity · BTC",
+        "hash": "0x8bd20e5a698a89dd78f9b3c15bb0314522feb8e26d397619bb593b40bcfddd09",
+        "status": "success"
+      },
+      {
+        "time": 1788598268626,
+        "label": "Approve treasury liquidity",
+        "hash": "0x78560d5b7b13d6ebe659a03db0362588226befbac8acf9f04a3644ae225e4e1d",
+        "status": "success"
+      },
+      {
+        "time": 1788598238740,
+        "label": "Fund testnet liquidity treasury",
+        "hash": "0x9501c46d10bbfa729892b283f513da3d91d70544498c1d3d074fd44a23798e52",
+        "status": "success"
+      },
+      {
+        "time": 1788598092177,
+        "label": "Pay entrants · royale 1",
+        "hash": "0xafe19d466feb96e6adffc3617b8138b215cd482ac02330b362d15fa8ce7c20c2",
+        "status": "success"
+      },
+      {
+        "time": 1788598067656,
+        "label": "Cancel unstarted event · royale 1",
+        "hash": "0x77b26d03f561518a5a099d5cc4358cdc239b3bcb4039a6933f9c6ff04a98d8d7",
+        "status": "success"
+      }
+    ],
+    "issues": {
+      "1": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788598131571
+      },
+      "2": {
+        "error": "Payout is being processed; deferred recipients will retry.",
+        "retryAt": 1788599909513
+      }
+    },
+    "registry": "0x893a0e96b4ea20410f10856e2da2d0aee88a7439",
+    "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "sponsor": "0x24a43ad7e9318cf515867477bf9c489989dcc701",
+    "enabled": true,
+    "keeper": "0x7398556C34044B866102b32655F13B9a5b394Da0",
+    "managed": [
+      2
+    ]
+  },
+  "finishedAt": "2026-09-05T09:17:41.298Z"
+}

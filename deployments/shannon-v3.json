@@ -1,0 +1,62 @@
+{
+  "chainId": 50312,
+  "version": 3,
+  "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+  "sponsor": "0x24a43ad7e9318cf515867477bf9c489989dcc701",
+  "transactions": [
+    {
+      "hash": "0x8dd966d6d177e74fef15c70c0519bdf29478fbdbdffbb7ae6af3b55adfad734a",
+      "label": "Deploy V3 arena",
+      "status": "success",
+      "block": "480241927",
+      "gasUsed": "91174016"
+    },
+    {
+      "hash": "0xbb541d85a4c35f5ad2ef5be2899da7e606b0b97e466a5516fe5c497fcaa07eb2",
+      "label": "Deploy progression",
+      "status": "success",
+      "block": "480241976",
+      "gasUsed": "46429520"
+    },
+    {
+      "hash": "0xc5d5cd95e3f8805533aa9c5693fbf950703b277cd0299595e63c3debd3f31ce6",
+      "label": "Mint sponsor reserve",
+      "status": "success",
+      "block": "480242046",
+      "gasUsed": "53138"
+    },
+    {
+      "hash": "0x5ecf4afc65fdefe9db733d0ef58a888f8408907313408e1432470c8e6ad659ba",
+      "label": "Approve sponsor reserve",
+      "status": "success",
+      "block": "480242096",
+      "gasUsed": "259745"
+    },
+    {
+      "hash": "0x2fd2e595166fb8f316c6e2e16500c675c815876259889d555d341aa64248a134",
+      "label": "Fund sponsor reserve",
+      "status": "success",
+      "block": "480242142",
+      "gasUsed": "485183"
+    },
+    {
+      "hash": "0x92948126c1e1b2daa166ce05a0dcbdf76a4ea66a636691574fca9e6629556849",
+      "label": "Verify launch players",
+      "status": "success",
+      "block": "480242189",
+      "gasUsed": "490466"
+    }
+  ],
+  "completedSteps": [
+    "Deploy V3 arena",
+    "Deploy progression",
+    "Mint sponsor reserve",
+    "Approve sponsor reserve",
+    "Fund sponsor reserve",
+    "Verify launch players"
+  ],
+  "arena": "0x893a0e96b4ea20410f10856e2da2d0aee88a7439",
+  "progression": "0x8a51939488b69ba3031b9a949001d2ab2d4364d2",
+  "status": "ready",
+  "reserve": "192000000"
+}

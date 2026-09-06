@@ -1,0 +1,29 @@
+{
+  "chainId": 50312,
+  "registry": "0x7c0dd0d2aea196118dbca546bdc2c6ecf541dd1e",
+  "match": 1,
+  "evidence": "Browser receipt confirmations observed during the UI test before RPC outage",
+  "status": "entries-confirmed-awaiting-recovery",
+  "transactions": [
+    {
+      "action": "Schedule event",
+      "hash": "0x5ca5999e01c4ce9b61ce88fe783f87f9cb0973c06eddc50d886156243292630a"
+    },
+    {
+      "action": "Player A approve",
+      "hash": "0xf79b92b93739931db65915d2a66b13864b96c0da1ff586792368790fe1092eff"
+    },
+    {
+      "action": "Player A join",
+      "hash": "0x59e42768bfacab2aac288004850386d8aebd343b01a694f6d7df1633dedaeb27"
+    },
+    {
+      "action": "Player B approve",
+      "hash": "0x73d5395c76ca94d35badb95c53d1a082669bcb914e0d68eed689887901740dd1"
+    },
+    {
+      "action": "Player B join",
+      "hash": "0x314d1fba6b6782c91b6c6b0fee94360150c70ba1f7c3e9f165e80a12a45c243c"
+    }
+  ]
+}

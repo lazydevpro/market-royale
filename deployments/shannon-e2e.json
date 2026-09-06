@@ -1,0 +1,307 @@
+{
+  "network": "Somnia Shannon",
+  "chainId": 50312,
+  "transactions": [
+    {
+      "label": "Deploy MarketRoyale",
+      "hash": "0xfb8bb76c24b9887c694a3dde9f1af10287a7998525d7232e51c246bf8ae7adad",
+      "status": "success",
+      "block": "479490389",
+      "gasUsed": "67110232"
+    },
+    {
+      "label": "Fund player 1 STT",
+      "hash": "0x7b99646a6c1380b9671169fabbc61b0b2e62d5db379d6f149a606f743f959a48",
+      "status": "success",
+      "block": "479490427",
+      "gasUsed": "421000"
+    },
+    {
+      "label": "Fund player 2 STT",
+      "hash": "0xbd0ce68ffdf84a3533a830085e223e6b5fbfd85e8221f5a18637b2cfe2ae0b89",
+      "status": "success",
+      "block": "479490467",
+      "gasUsed": "421000"
+    },
+    {
+      "label": "Faucet 100 tUSDC",
+      "hash": "0xd136594654a86da4b9a777ad9da39d72376d341ec2d5d89fe3b34522352abe02",
+      "status": "success",
+      "block": "479490512",
+      "gasUsed": "253138"
+    },
+    {
+      "label": "Fund player 1 tUSDC",
+      "hash": "0x054905a24394867f858a9041ac76fcb8307483d35ae1866ae4f8c3d7fb6c1a1c",
+      "status": "success",
+      "block": "479490557",
+      "gasUsed": "262180"
+    },
+    {
+      "label": "Fund player 2 tUSDC",
+      "hash": "0x3c86849dcc37352f0cc222bcb363d48516dc0f8ce1f1bd0827df83200b9e52ec",
+      "status": "success",
+      "block": "479490605",
+      "gasUsed": "262180"
+    },
+    {
+      "label": "Approve mint",
+      "hash": "0xfa19b3590a0b428053c8cc41c62e32c5ca3b02d4a3f0bb1481fdbc9b32b6d66d",
+      "status": "success",
+      "block": "479492170",
+      "gasUsed": "259745"
+    },
+    {
+      "label": "Mint 20 real outcome pairs",
+      "hash": "0xd09c262fb6c2c0aaabc4383a995dc9bbd3e89a7bc7b9394a19539cc8331c5496",
+      "status": "success",
+      "block": "479492210",
+      "gasUsed": "1391552"
+    },
+    {
+      "label": "Approve maker outcome escrow",
+      "hash": "0x3a72e1e2d2239a66a88386879afbfa5827c9d8ffae0096dce31bb5b085f638f2",
+      "status": "success",
+      "block": "479492251",
+      "gasUsed": "260419"
+    },
+    {
+      "label": "Post real UP liquidity",
+      "hash": "0xcc3a763e6bc39fe73931c8c4c56cf5bc5d81ae55b7fa3e6640dd5cc73bc456c8",
+      "status": "success",
+      "block": "479492292",
+      "gasUsed": "3247606"
+    },
+    {
+      "label": "Post real DOWN liquidity",
+      "hash": "0x345dd4cd5ddc06b02189c1ce2a832b82fd42315873eac9c6d9ff9e5583cd2083",
+      "status": "success",
+      "block": "479492333",
+      "gasUsed": "3661775"
+    },
+    {
+      "label": "Revoke maker outcome operator",
+      "hash": "0x0368b259831373e2183285c168731010e74d0e7680b25e0ca720d70c6e4ee963",
+      "status": "success",
+      "block": "479492376",
+      "gasUsed": "60419"
+    },
+    {
+      "label": "Create two-player royale",
+      "hash": "0xb00580855f5cc61920e5cc245ac890961928e35f187bfaea3be651df7b317807",
+      "status": "success",
+      "block": "479492431",
+      "gasUsed": "1688687"
+    },
+    {
+      "label": "Player 1 approves entry",
+      "hash": "0xc1d7cf2b80a601f44220a6da0221bc9c981435e2ac3661e1f62ec209a3ddd319",
+      "status": "success",
+      "block": "479492497",
+      "gasUsed": "259745"
+    },
+    {
+      "label": "Player 1 joins with 12 tUSDC",
+      "hash": "0xa67117c60d5ce08054ecadf2e173b98aca2706860471ef1d442d671edb313cd1",
+      "status": "success",
+      "block": "479492547",
+      "gasUsed": "29517080"
+    },
+    {
+      "label": "Player 2 approves entry",
+      "hash": "0x9e72b6f7dfdd14dedc49b39e95a9fc464ff6204d4e22f00bc4553a4a444095f7",
+      "status": "success",
+      "block": "479492628",
+      "gasUsed": "259745"
+    },
+    {
+      "label": "Player 2 joins with 12 tUSDC",
+      "hash": "0x9d831415da3ee960212ab814094b6ee1ea6437d2c6abcd67b3a4059d1b88147f",
+      "status": "success",
+      "block": "479492677",
+      "gasUsed": "28917080"
+    },
+    {
+      "label": "Start real royale",
+      "hash": "0x4dd834660fcdc61526379d08d5a2dc58d6f08ba5458e7bad562baf34094c5ddf",
+      "status": "success",
+      "block": "479492827",
+      "gasUsed": "499016"
+    },
+    {
+      "label": "Player 1 buys UP",
+      "hash": "0x06ffc507153c14398272e370d57f689bb8964d1f7c95db01ccd8b606df3ed594",
+      "status": "success",
+      "block": "479492878",
+      "gasUsed": "2694145"
+    },
+    {
+      "label": "Player 2 buys DOWN",
+      "hash": "0xab911255fa56a6af6d5e9867f8d696229abf6aa0ca6ad5543686e460cd2563e5",
+      "status": "success",
+      "block": "479492929",
+      "gasUsed": "1699010"
+    },
+    {
+      "label": "Cancel remaining maker inventory",
+      "hash": "0x4b450525deeca22889ddcfb51675d85a0216440995dc570aef6536abf2f6ee94",
+      "status": "success",
+      "block": "479492972",
+      "gasUsed": "136744"
+    },
+    {
+      "label": "Cancel remaining maker inventory",
+      "hash": "0xc09c5dbf084aec00c0fd5db343819f6e4207a83d589c9cd8cbd3b24bf1d534b7",
+      "status": "success",
+      "block": "479493013",
+      "gasUsed": "136589"
+    },
+    {
+      "label": "Settle tournament from real oracle",
+      "hash": "0xae952184d2f43fd5234ed42f091e13f8316063cd9ab425324786dd689bd1202c",
+      "status": "success",
+      "block": "479494990",
+      "gasUsed": "1567477"
+    },
+    {
+      "label": "Player 1 withdraws settled bankroll",
+      "hash": "0xf01dfea1d6ad6678eb46c79a35c8920715961dcbb762078bb09d46c28ce386e9",
+      "status": "success",
+      "block": "479495052",
+      "gasUsed": "88301"
+    },
+    {
+      "label": "Player 1 claims prize",
+      "hash": "0xc1381dac5d267bdfc57c49f20e2261bfce07210208daef8e2864937f9933bbce",
+      "status": "success",
+      "block": "479495092",
+      "gasUsed": "92181"
+    },
+    {
+      "label": "Player 2 withdraws settled bankroll",
+      "hash": "0x608d9d21ed4b31dce96d2bc909a96bd4e6b8cb5a3f4357cd6b5a1b8f78189487",
+      "status": "success",
+      "block": "479495135",
+      "gasUsed": "88301"
+    },
+    {
+      "label": "Player 2 claims prize",
+      "hash": "0xd0f7d1736d341aaccbd54c7fb28c2ad205abdd2a5f18ddb1878a3555a4863f42",
+      "status": "success",
+      "block": "479495188",
+      "gasUsed": "92181"
+    },
+    {
+      "label": "Approve remaining maker redemption",
+      "hash": "0x4222b4cfa20928063cb22d3fc5311e15f203dc503f5cd66a0df79ebe13a92ba7",
+      "status": "success",
+      "block": "479495231",
+      "gasUsed": "260419"
+    },
+    {
+      "label": "Redeem remaining maker inventory",
+      "hash": "0x8aad838315e32cd70711b0c98ca11418de28ad24aeeecf6df460fffb173692a6",
+      "status": "success",
+      "block": "479495294",
+      "gasUsed": "272707"
+    },
+    {
+      "label": "Revoke maker redemption operator",
+      "hash": "0x0fe5621964b7deec37f4c1769d9607dec9ab74cc893b176033ac8d1bcbf3039c",
+      "status": "success",
+      "block": "479495346",
+      "gasUsed": "60419"
+    }
+  ],
+  "status": "complete",
+  "registry": "0x50010a633babac530f72cd542174533ee48ad5cb",
+  "market": {
+    "id": "0x00000000000000000000000000000000000000000000000000000000000133ec",
+    "market": "0xfab357633AB1898C5Fed8ca5802CBFE404fc7833",
+    "pool": "0xc51c923A0473353C94b87fbd173034Eeec4b4ADA",
+    "creator": "0x94D963B6670AB96E78C8d0C46ca35D196d606EFE",
+    "venue": "0x679795a0195a1b76cdebb7c51d74e058aee92919b8c3389af86ef24535e8a28c",
+    "asset": "BTC",
+    "question": "BTC closes at or above its opening price",
+    "questionId": "50614",
+    "start": 1788522300,
+    "expiry": 1788522600,
+    "interval": 300,
+    "yesId": "5314118391742077729613158086234767410835003413826566359856160144621824",
+    "noId": "5314118391742077729613158086234767410835003413826566359856160144621825",
+    "status": 1,
+    "outcomeToken": "0xB52c5934113Af5c0Bb20eb3C72290C8215f755b9",
+    "resolved": false,
+    "voided": false,
+    "payouts": [],
+    "recycled": false,
+    "bids": [],
+    "asks": [],
+    "tick": "1000",
+    "lot": "1000",
+    "min": "1000"
+  },
+  "minted": true,
+  "makerOrders": [
+    "18446744073709551617",
+    "36893488147419103234"
+  ],
+  "tournamentId": 1,
+  "players": [
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "vault": "0x7aE4e05e0362D3F43604f85f3105f0a523D4b63c"
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "vault": "0x2EfBDa605146C5ee094e1c64A4CfC82569B373a6"
+    }
+  ],
+  "player1Fill": {
+    "shares": "2000000",
+    "cashDelta": "-1100000",
+    "cashAfter": "8900000"
+  },
+  "player2Fill": {
+    "shares": "2000000",
+    "cashDelta": "-1100000",
+    "cashAfter": "8900000"
+  },
+  "makerCancelled": true,
+  "final": [
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "vault": "0x7aE4e05e0362D3F43604f85f3105f0a523D4b63c",
+      "rank": 1,
+      "prize": "4000000"
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "vault": "0x2EfBDa605146C5ee094e1c64A4CfC82569B373a6",
+      "rank": 2,
+      "prize": "0"
+    }
+  ],
+  "payoutNumerators": [
+    "10000000",
+    "0"
+  ],
+  "finalBalances": [
+    {
+      "wallet": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+      "tUSDC": "70200000",
+      "STT": "45.506600176"
+    },
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "tUSDC": "17900000",
+      "STT": "1.804091288"
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "tUSDC": "11900000",
+      "STT": "1.813662098"
+    }
+  ],
+  "completedAt": "2026-09-04T11:50:48.519Z"
+}

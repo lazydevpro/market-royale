@@ -1,0 +1,9 @@
+{
+  "chainId": 50312,
+  "address": "0x50010a633babac530f72cd542174533ee48ad5cb",
+  "transactionHash": "0xfb8bb76c24b9887c694a3dde9f1af10287a7998525d7232e51c246bf8ae7adad",
+  "block": "479490389",
+  "collateral": "0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E",
+  "module": "0x3ecC694Cef705358864a646142ac17A90E29e388",
+  "compiler": "0.8.28+commit.7893614a.Emscripten.clang"
+}

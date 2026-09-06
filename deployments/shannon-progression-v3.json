@@ -1,0 +1,57 @@
+{
+  "chainId": 50312,
+  "version": 3,
+  "arena": "0x4a17dc5e798e68060e6e8cadbf795531557880cd",
+  "predecessor": "0x4a1a24a6983efb14382165be841cf13c777af384",
+  "deployer": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+  "transactions": [
+    {
+      "hash": "0xc5d7e605c98c25ad4d43a6576abfaf666ed06b402fa6b5b0e005eeafc35039cf",
+      "label": "Deploy progression V3",
+      "status": "success",
+      "block": "481194984",
+      "gasUsed": "46580637"
+    },
+    {
+      "hash": "0xc39cd71e4659095dd8a18bc440d62d50bba2a946806f5e1257a817628b91db89",
+      "label": "Approve V3 reserve",
+      "status": "success",
+      "block": "481195079",
+      "gasUsed": "259745"
+    },
+    {
+      "hash": "0xcf2b6c409b6c66865fb1c6d6a00943479ca98c95b25c136311634f75f91a707e",
+      "label": "Fund V3 reserve",
+      "status": "success",
+      "block": "481195151",
+      "gasUsed": "485161"
+    },
+    {
+      "hash": "0xef0c13eb60e1bf3b473d28bc184748fea43d81c5287fe6890e2ece64b354133e",
+      "label": "Verify test players",
+      "status": "success",
+      "block": "481195218",
+      "gasUsed": "1848470"
+    }
+  ],
+  "completedSteps": [
+    "Deploy progression V3",
+    "Approve V3 reserve",
+    "Fund V3 reserve",
+    "Verify test players"
+  ],
+  "progression": "0xe1af2b5fa9f8d25908c46925da186b80796e629f",
+  "status": "ready",
+  "firstSeasonEnds": "1796461069",
+  "reserve": "192000000",
+  "eligiblePlayers": [
+    "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "0x083995C36A49726E8C232D4763638239d154f33B",
+    "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+    "0x7398556C34044B866102b32655F13B9a5b394Da0",
+    "0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0",
+    "0x6C3162695B106F9F200057113bE7C60469C4A399",
+    "0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd",
+    "0xF5339652Db213CC08091d8C6e973640cae8e526b"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "version": 3,
+  "chainId": 50312,
+  "registry": "0x893a0e96b4ea20410f10856e2da2d0aee88a7439",
+  "status": "complete-refunded",
+  "transactions": [
+    {
+      "hash": "0x9565e17be78093a3bc461725563283b5a939936ff76b27c13e7664b5a440b7a7",
+      "label": "Schedule playable event",
+      "status": "success",
+      "block": "480244476"
+    },
+    {
+      "hash": "0x17cd7a6fde22ce584c4729a6667e0b7dd27a79f7da3bebff49e239edcca00119",
+      "label": "Fund player 1",
+      "status": "success",
+      "block": "480244528"
+    },
+    {
+      "hash": "0xbdeae1fe98e38d559785786bb0aa2ff05ead0336374b20cb11283b78f006062d",
+      "label": "Approve player 1",
+      "status": "success",
+      "block": "480244577"
+    },
+    {
+      "hash": "0xbac175a22a494eeac4954ebd507fbc6522fd30f82251d7bcd65c5a5cb5b9c51e",
+      "label": "Enter player 1",
+      "status": "success",
+      "block": "480244626"
+    },
+    {
+      "hash": "0x667df7c350acbde0b913cd7981a44df45548e907ff3837af1ababeeb70c55b57",
+      "label": "Fund player 2",
+      "status": "success",
+      "block": "480244679"
+    },
+    {
+      "hash": "0x6769fbe00a5a6247af08e88c6ab3aee251b9b0ec196f5cd73cecaba7289b1990",
+      "label": "Approve player 2",
+      "status": "success",
+      "block": "480244726"
+    },
+    {
+      "hash": "0x418be6578103cce1b119484508e38d128700c0c550724da0d588d6e648db1a23",
+      "label": "Enter player 2",
+      "status": "success",
+      "block": "480244775"
+    }
+  ],
+  "completedSteps": [
+    "Schedule playable event",
+    "Fund player 1",
+    "Approve player 1",
+    "Enter player 1",
+    "Fund player 2",
+    "Approve player 2",
+    "Enter player 2"
+  ],
+  "match": 1,
+  "start": "1788597746",
+  "duration": 3600,
+  "marketCandidate": "0x000000000000000000000000000000000000000000000000000000000001405a",
+  "cancelReason": 2,
+  "refunds": [
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "prizeClaimed": true,
+      "vaultWithdrawn": true
+    },
+    {
+      "wallet": "0x1D30B9ED83efd12e3A6aC1bd48C10c98B44fC556",
+      "prizeClaimed": true,
+      "vaultWithdrawn": true
+    }
+  ],
+  "verifiedAt": "2026-09-05T09:23:32.203Z"
+}

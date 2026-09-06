@@ -1,0 +1,95 @@
+{
+  "transactions": [
+    {
+      "hash": "0x87849ccaf3abb638d4426b94c74d0429eb091095aed0849311c2b35318278602",
+      "fn": "faucet",
+      "status": "success"
+    },
+    {
+      "hash": "0x984f7ce4024cb07789df10ed6ed9faaede29b56582d3cd4f6e63ffbe75acfb72",
+      "fn": "schedule",
+      "status": "success"
+    },
+    {
+      "hash": "0xfda63797d6d1218a5256249b0800dcb7edcec2741066ee596858f5bce6ac2ea0",
+      "fn": "schedule",
+      "status": "success"
+    },
+    {
+      "hash": "0xed856df05992d924ee594d53cd11f424d1d3871bb719126f9c22900dcad381fa",
+      "fn": "faucet",
+      "status": "success"
+    },
+    {
+      "hash": "0xa86d244c388a2e5d1c15ab9eb7d3ffd537d7ebe3f5b4af87a6e30aff51d6420c",
+      "fn": "approve",
+      "status": "success"
+    },
+    {
+      "hash": "0xd6634a21a2f5ff6772b747ac26dd08a2e9761ceb426ff2172e3b438dc875fcbe",
+      "fn": "join",
+      "status": "success"
+    },
+    {
+      "hash": "0xc19d1a8f4267dfcbbca6ee15ca428b62a5bce2383d870f0314c3461b40696572",
+      "fn": "schedule",
+      "status": "success"
+    },
+    {
+      "hash": "0xbf9d53c724441120b535297875949a5ec5ad84d2f80b4e043f1c0adf11222711",
+      "fn": "faucet",
+      "status": "success"
+    },
+    {
+      "hash": "0x858992dc9a343a50d16ce1a9fb94f16c74aec3ffe9c642b5c0e0e5ab344ce636",
+      "fn": "approve",
+      "status": "success"
+    },
+    {
+      "hash": "0x941bcb1ffa9b9842405717cd774133b9a1321df087176a84ac609bcfef27642d",
+      "fn": "join",
+      "status": "success"
+    },
+    {
+      "hash": "0x3a26486ec29f08d02401ba3153c47e1c0ae7246cd582053601d291e752291603",
+      "fn": "faucet",
+      "status": "success"
+    },
+    {
+      "hash": "0x4e3371935e8305feda95ef044cf7e39544aeffe8b1b1731a9c902067cb40830e",
+      "fn": "approve",
+      "status": "success"
+    },
+    {
+      "hash": "0xe880b35897d51b28c225b68633244d00997c05749e2b9f1523542e1933a766c3",
+      "fn": "join",
+      "status": "success"
+    }
+  ],
+  "cases": [
+    {
+      "name": "zero-turnout",
+      "id": 2,
+      "expectedReason": 1,
+      "actualReason": 1,
+      "recoveryConfirmed": true
+    },
+    {
+      "name": "one-player",
+      "id": 3,
+      "expectedReason": 1,
+      "actualReason": 1,
+      "recoveryConfirmed": true
+    },
+    {
+      "name": "no-trades",
+      "id": 4,
+      "expectedReason": 3,
+      "actualReason": 2,
+      "recoveryConfirmed": true
+    }
+  ],
+  "verificationStatus": "recovery-confirmed-on-shannon",
+  "verifiedAt": "2026-09-05T08:02:05.938Z",
+  "note": "The intended no-trade case (#4) did not start because no compatible five-minute DreamDEX market was available; it exercised missed-start recovery instead. No-trade settlement remains covered by local contract tests."
+}
