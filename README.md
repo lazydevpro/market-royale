@@ -113,6 +113,7 @@ The gate runs TypeScript checks, the local EVM contract suite, and a production 
 
 ## Submission material
 
+- [Hackathon presentation deck](submission/Market-Royale-Hackathon-Deck.pptx)
 - [DoraHacks submission copy](docs/SUBMISSION.md)
 - [2–3 minute demo script](docs/DEMO_SCRIPT.md)
 - [Game mechanics audit](docs/game-mechanics-audit.md)

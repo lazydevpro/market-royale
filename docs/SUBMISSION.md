@@ -75,6 +75,12 @@ All three are linked through the Shannon explorer in the repository README.
 
 `DeFi` · `Event Contracts` · `Prediction Markets` · `DreamDEX` · `Consumer`
 
+## Presentation
+
+- [Market Royale hackathon deck](../submission/Market-Royale-Hackathon-Deck.pptx)
+- The deck includes speaker notes, public Shannon proof, game mechanics,
+  architecture, failure safeguards, and DreamDEX ecosystem impact.
+
 ## Team
 
 Add the builder name, role, GitHub profile, and one contact link before
@@ -87,6 +93,7 @@ submission.
 - [x] Public contract addresses and transaction journals
 - [x] Reproducible install and verification commands
 - [x] 2–3 minute demo script
+- [x] Hackathon presentation deck
 - [x] Optional SDK and documentation feedback report
 - [ ] Public Cloudflare URL added above and tested in a clean browser
 - [ ] Public GitHub URL added above
