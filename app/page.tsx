@@ -197,6 +197,12 @@ const seconds = (n: number) => {
     .toString()
     .padStart(2, "0")}:${(n % 60).toString().padStart(2, "0")}`;
 };
+const localTime = (timestamp: number) =>
+  new Date(timestamp * 1000).toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 const cents = (value: string | bigint) =>
   (Number(value) / 10_000).toFixed(4).replace(/\.?0+$/, "");
 const ONE_SHARE = 1_000_000n;
@@ -702,6 +708,12 @@ export default function Home() {
       !m.recycled &&
       m.expiry > now + Number(joinWindow) + 135,
   );
+  const quickMarkets = usableMarkets
+    .filter((market) => market.asset === assetPreference)
+    .sort((a, b) => a.expiry - b.expiry);
+  const quickAvailableAssets = ["BTC", "ETH"].filter((asset) =>
+    usableMarkets.some((market) => market.asset === asset),
+  );
   const availableAssets = ["BTC", "ETH"].filter((asset) =>
     live.some((market) => market.status === 1 && market.asset === asset),
   );
@@ -716,12 +728,18 @@ export default function Home() {
     ),
   );
   useEffect(() => {
+    const validAssets = scheduled ? availableAssets : quickAvailableAssets;
     if (
-      availableAssets.length &&
-      !availableAssets.includes(assetPreference)
+      validAssets.length &&
+      !validAssets.includes(assetPreference)
     )
-      setAssetPreference(availableAssets[0]);
-  }, [assetPreference, availableAssets.join(",")]);
+      setAssetPreference(validAssets[0]);
+  }, [
+    scheduled,
+    assetPreference,
+    availableAssets.join(","),
+    quickAvailableAssets.join(","),
+  ]);
   useEffect(() => {
     if (
       availableDurations.length &&
@@ -730,9 +748,25 @@ export default function Home() {
       setDuration(String(availableDurations[0]));
   }, [duration, availableDurations.join(",")]);
   useEffect(() => {
-    if (!usableMarkets.some((m) => m.id === marketId))
-      setMarketId(usableMarkets[0]?.id ?? "");
-  }, [marketId, usableMarkets.map((m) => m.id).join(",")]);
+    if (!quickMarkets.some((m) => m.id === marketId))
+      setMarketId(quickMarkets[0]?.id ?? "");
+  }, [marketId, quickMarkets.map((m) => m.id).join(",")]);
+  const quickMarket = quickMarkets.find((market) => market.id === marketId);
+  const quickRoundLimit = Math.max(
+    1,
+    Math.min(
+      Number(rounds),
+      Math.ceil(Math.log2(Math.max(2, Number(capacity)))),
+    ),
+  );
+  const quickFinalClose = quickMarket
+    ? quickMarket.expiry + (quickRoundLimit - 1) * quickMarket.interval
+    : 0;
+  const quickSettlementBuffer =
+    60 + Math.ceil(Math.max(2, Number(capacity)) / 4) * 15;
+  const quickEstimatedCompletion = quickFinalClose
+    ? quickFinalClose + quickSettlementBuffer
+    : 0;
   const quote = m
     ? side === "UP"
       ? direction === "buy"
@@ -2151,9 +2185,9 @@ export default function Home() {
                         lobby opens.
                       </p>
                       <p className="small mr-host-note">
-                        Scheduled events follow your selected DreamDEX asset and
-                        align with its next published window. The confirmed lobby
-                        shows the exact start time.{" "}
+                        {scheduled
+                          ? "Scheduled events follow your selected DreamDEX asset and align with its next published window. The confirmed lobby shows the exact start time. "
+                          : "Quick matches enter the selected asset's current active market. Its countdown updates every second and live market data refreshes every 20 seconds. "}
                         {ops?.botBackfill
                           ? "Training bots backfill and operate every local test match."
                           : "Official-host events receive automatic operation."}
@@ -2255,6 +2289,28 @@ export default function Home() {
                       </div>
                     )}
                     <div className="tn-form-grid">
+                      {!scheduled && (
+                        <label>
+                          MARKET ASSET
+                          <select
+                            value={assetPreference}
+                            onChange={(e) => setAssetPreference(e.target.value)}
+                          >
+                            {["BTC", "ETH"].map((asset) => (
+                              <option
+                                key={asset}
+                                value={asset}
+                                disabled={!quickAvailableAssets.includes(asset)}
+                              >
+                                {asset}
+                                {quickAvailableAssets.includes(asset)
+                                  ? ""
+                                  : " · no eligible market"}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
                       <label>
                         ENTRY CONTRIBUTION
                         <select
@@ -2295,12 +2351,12 @@ export default function Home() {
                           value={marketId}
                           onChange={(e) => setMarketId(e.target.value)}
                         >
-                          {!usableMarkets.length && (
+                          {!quickMarkets.length && (
                             <option value="">
-                              No eligible market right now
+                              No eligible {assetPreference} market right now
                             </option>
                           )}
-                          {usableMarkets.map((m) => (
+                          {quickMarkets.map((m) => (
                             <option key={m.id} value={m.id}>
                               {m.asset} · {Number((m.interval / 60).toFixed(2))}{" "}
                               min · expires{" "}
@@ -2357,6 +2413,115 @@ export default function Home() {
                         </select>
                       </label>
                     </div>
+                    {!scheduled && (
+                      <div className="tn-quick-summary">
+                        <div className="tn-quick-summary-head">
+                          <span className="tn-quick-summary-icon">
+                            <Clock3 size={21} aria-hidden="true" />
+                          </span>
+                          <div>
+                            <strong>QUICK MATCH USES THE LIVE MARKET</strong>
+                            <p>
+                              Joining does not restart its clock. Your first
+                              round ends when the selected DreamDEX market
+                              closes.
+                            </p>
+                          </div>
+                        </div>
+                        {marketError ? (
+                          <div
+                            className="tn-quick-state"
+                            role="status"
+                            aria-live="polite"
+                          >
+                            <p>Could not refresh live DreamDEX timing.</p>
+                            <button
+                              type="button"
+                              className="text-link"
+                              onClick={refresh}
+                            >
+                              Retry market feed
+                            </button>
+                          </div>
+                        ) : !marketAt ? (
+                          <div
+                            className="tn-quick-state"
+                            role="status"
+                            aria-live="polite"
+                          >
+                            <span className="tn-spinner" aria-hidden="true" />
+                            <p>Reading live DreamDEX markets…</p>
+                          </div>
+                        ) : !quickMarket ? (
+                          <div
+                            className="tn-quick-state"
+                            role="status"
+                            aria-live="polite"
+                          >
+                            <p>
+                              No {assetPreference} market has enough time left
+                              for the selected enrollment window.
+                            </p>
+                            {quickAvailableAssets.some(
+                              (asset) => asset !== assetPreference,
+                            ) && (
+                              <button
+                                type="button"
+                                className="text-link"
+                                onClick={() =>
+                                  setAssetPreference(
+                                    quickAvailableAssets.find(
+                                      (asset) => asset !== assetPreference,
+                                    )!,
+                                  )
+                                }
+                              >
+                                Use available asset
+                              </button>
+                            )}
+                          </div>
+                        ) : (
+                          <>
+                            <div className="tn-quick-timeline">
+                              <div>
+                                <span>ENTRY CLOSES</span>
+                                <strong>{seconds(Number(joinWindow))}</strong>
+                                <small>after creation</small>
+                              </div>
+                              <div>
+                                <span>ROUND 1 CLOSES</span>
+                                <strong>
+                                  {seconds(quickMarket.expiry - now)}
+                                </strong>
+                                <small>{localTime(quickMarket.expiry)}</small>
+                              </div>
+                              <div>
+                                <span>EST. FINAL RESULT</span>
+                                <strong>
+                                  {seconds(quickEstimatedCompletion - now)}
+                                </strong>
+                                <small>
+                                  ~{localTime(quickEstimatedCompletion)} · up to{" "}
+                                  {quickRoundLimit} round
+                                  {quickRoundLimit === 1 ? "" : "s"}
+                                </small>
+                              </div>
+                            </div>
+                            <p className="tn-quick-footnote">
+                              {quickMarket.asset} · {quickMarket.interval / 60}
+                              -minute market · feed updated{" "}
+                              {Math.max(
+                                0,
+                                Math.floor((Date.now() - marketAt) / 1000),
+                              )}
+                              s ago. Settlement time includes an oracle and
+                              batch-processing estimate; recovery unlocks after
+                              a 15-minute oracle delay.
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    )}
                     <button
                       className="button green"
                       disabled={

@@ -2560,9 +2560,98 @@ h3,
 
 .arena-shell .tn-create > .tn-tabs,
 .arena-shell .tn-create > .tn-form-grid,
+.arena-shell .tn-create > .tn-quick-summary,
 .arena-shell .tn-create > .button,
 .arena-shell .tn-create > p.small:not(.muted) {
   grid-column: 2;
+}
+
+.tn-quick-summary {
+  min-height: 150px;
+  padding: 16px;
+  border: 2px solid #cfe6f7;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #edf8ff 100%);
+  box-shadow: 0 4px 12px rgb(32 78 128 / 6%);
+}
+
+.tn-quick-summary-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tn-quick-summary-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #743ce5, #1259e0);
+  color: white;
+}
+
+.tn-quick-summary-head strong {
+  color: #173e72;
+  font-size: 12px;
+  letter-spacing: 0.35px;
+}
+
+.arena-shell .tn-create .tn-quick-summary p {
+  max-width: none;
+  margin: 3px 0 0;
+  color: #526b8c;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.tn-quick-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.tn-quick-timeline > div {
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #e8f4ff;
+}
+
+.tn-quick-timeline span,
+.tn-quick-timeline small {
+  display: block;
+  color: #526b8c;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.tn-quick-timeline strong {
+  display: block;
+  margin: 3px 0 2px;
+  color: #1259e0;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+.arena-shell .tn-create .tn-quick-footnote {
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+.tn-quick-state {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 2px 0 54px;
+}
+
+.tn-quick-state .text-link {
+  min-height: 40px;
+  margin-left: auto;
 }
 
 .arena-shell .tn-create .tn-tabs {
@@ -2742,6 +2831,7 @@ h3,
   .arena-shell .tn-create > div:first-child,
   .arena-shell .tn-create > .tn-tabs,
   .arena-shell .tn-create > .tn-form-grid,
+  .arena-shell .tn-create > .tn-quick-summary,
   .arena-shell .tn-create > .button,
   .arena-shell .tn-create > p.small:not(.muted) {
     grid-column: 1;
@@ -2754,6 +2844,23 @@ h3,
 
   .arena-shell .tn-create::after {
     display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .tn-quick-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .tn-quick-state {
+    min-height: 96px;
+    align-items: flex-start;
+    flex-direction: column;
+    padding-left: 0;
+  }
+
+  .tn-quick-state .text-link {
+    margin-left: 0;
   }
 }
 
