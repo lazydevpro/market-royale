@@ -728,18 +728,13 @@ export default function Home() {
     ),
   );
   useEffect(() => {
-    const validAssets = scheduled ? availableAssets : quickAvailableAssets;
     if (
-      validAssets.length &&
-      !validAssets.includes(assetPreference)
+      scheduled &&
+      availableAssets.length &&
+      !availableAssets.includes(assetPreference)
     )
-      setAssetPreference(validAssets[0]);
-  }, [
-    scheduled,
-    assetPreference,
-    availableAssets.join(","),
-    quickAvailableAssets.join(","),
-  ]);
+      setAssetPreference(availableAssets[0]);
+  }, [scheduled, assetPreference, availableAssets.join(",")]);
   useEffect(() => {
     if (
       availableDurations.length &&
@@ -2290,26 +2285,34 @@ export default function Home() {
                     )}
                     <div className="tn-form-grid">
                       {!scheduled && (
-                        <label>
-                          MARKET ASSET
-                          <select
-                            value={assetPreference}
-                            onChange={(e) => setAssetPreference(e.target.value)}
-                          >
-                            {["BTC", "ETH"].map((asset) => (
-                              <option
-                                key={asset}
-                                value={asset}
-                                disabled={!quickAvailableAssets.includes(asset)}
-                              >
-                                {asset}
-                                {quickAvailableAssets.includes(asset)
-                                  ? ""
-                                  : " · no eligible market"}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
+                        <fieldset className="tn-quick-assets">
+                          <legend>MARKET ASSET</legend>
+                          <div>
+                            {["BTC", "ETH"].map((asset) => {
+                              const isAvailable = quickAvailableAssets.includes(asset);
+                              return (
+                                <button
+                                  key={asset}
+                                  type="button"
+                                  className={
+                                    assetPreference === asset ? "selected" : ""
+                                  }
+                                  aria-pressed={assetPreference === asset}
+                                  onClick={() => setAssetPreference(asset)}
+                                >
+                                  <span>{asset}</span>
+                                  <small>
+                                    <i
+                                      className={isAvailable ? "live" : "waiting"}
+                                      aria-hidden="true"
+                                    />
+                                    {isAvailable ? "LIVE" : "WAITING"}
+                                  </small>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </fieldset>
                       )}
                       <label>
                         ENTRY CONTRIBUTION

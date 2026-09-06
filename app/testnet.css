@@ -2685,6 +2685,80 @@ h3,
   font-size: 10px;
 }
 
+.tn-quick-assets {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #526b8c;
+}
+
+.tn-quick-assets legend {
+  margin-bottom: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.tn-quick-assets > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.tn-quick-assets button {
+  min-width: 0;
+  min-height: 47px;
+  padding: 7px 9px;
+  border: 2px solid #d6e8f5;
+  border-radius: 15px;
+  background: white;
+  color: #526b8c;
+  box-shadow: 0 4px 10px rgb(32 78 128 / 6%);
+  cursor: pointer;
+}
+
+.tn-quick-assets button.selected {
+  border-color: #356fe5;
+  background: #e8f2ff;
+  color: #1259e0;
+}
+
+.tn-quick-assets button:focus-visible {
+  outline: 3px solid #743ce5;
+  outline-offset: 2px;
+}
+
+.tn-quick-assets button > span,
+.tn-quick-assets button > small {
+  display: block;
+}
+
+.tn-quick-assets button > span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tn-quick-assets button > small {
+  margin-top: 2px;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.tn-quick-assets i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background: #f0a100;
+}
+
+.tn-quick-assets i.live {
+  background: #20bd42;
+}
+
 .arena-shell .tn-create .tn-form-grid select {
   min-height: 47px;
   border: 2px solid #d6e8f5;
