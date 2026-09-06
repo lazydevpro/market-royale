@@ -7,7 +7,7 @@ Prepared for the **Somnia × DreamDEX Event Contracts Hackathon**.
 Complete these three fields after the repository, Cloudflare build, and video
 are published:
 
-- **Working prototype:** `ADD_PUBLIC_CLOUDFLARE_URL`
+- **Working prototype:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
 - **Source code:** `ADD_PUBLIC_GITHUB_URL`
 - **2–3 minute demo video:** `ADD_YOUTUBE_OR_LOOM_URL`
 
@@ -95,7 +95,7 @@ submission.
 - [x] 2–3 minute demo script
 - [x] Hackathon presentation deck
 - [x] Optional SDK and documentation feedback report
-- [ ] Public Cloudflare URL added above and tested in a clean browser
+- [x] Public Cloudflare URL added above and tested
 - [ ] Public GitHub URL added above
 - [ ] Demo video uploaded and linked above
 - [ ] Builder identity and contact links added

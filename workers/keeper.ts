@@ -839,7 +839,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
       })) as Tournament;
       if (t.host.toLowerCase() === this.env.OFFICIAL_HOST.toLowerCase())
         this.ctx.storage.sql.exec(
-          "INSERT OR IGNORE INTO managed VALUES (?)",
+          "INSERT OR IGNORE INTO managed (id) VALUES (?)",
           id,
         );
     }
@@ -856,7 +856,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
         })) as Tournament;
         if (tournament.phase < 3)
           this.ctx.storage.sql.exec(
-            "INSERT OR IGNORE INTO managed VALUES (?)",
+            "INSERT OR IGNORE INTO managed (id) VALUES (?)",
             id,
           );
       }

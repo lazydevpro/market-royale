@@ -4,6 +4,8 @@
 
 Built for the [Somnia × DreamDEX Event Contracts Hackathon](https://dorahacks.io/hackathon/event-contracts/detail). The prototype is live on **Somnia Shannon testnet (chain 50312)** and uses real wallets, real DreamDEX order-book fills, oracle settlement, isolated player vaults, eliminations, payouts, progression, and transparent training bots.
 
+**Play the public testnet build:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
+
 ![Market Royale arena](docs/market-royale-arena.jpg)
 
 ## Why Market Royale
