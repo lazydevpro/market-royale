@@ -2511,15 +2511,27 @@ export default function Home() {
                               </div>
                             </div>
                             <p className="tn-quick-footnote">
-                              {quickMarket.asset} · {quickMarket.interval / 60}
-                              -minute market · feed updated{" "}
-                              {Math.max(
-                                0,
-                                Math.floor((Date.now() - marketAt) / 1000),
-                              )}
-                              s ago. Settlement time includes an oracle and
-                              batch-processing estimate; recovery unlocks after
-                              a 15-minute oracle delay.
+                              <span>
+                                {quickMarket.asset} · {quickMarket.interval / 60}
+                                -min live window. Estimate includes oracle and
+                                settlement batches; recovery unlocks after a
+                                15-min oracle delay.
+                              </span>
+                              <span className="tn-feed-age">
+                                Updated{" "}
+                                {String(
+                                  Math.min(
+                                    99,
+                                    Math.max(
+                                      0,
+                                      Math.floor(
+                                        (Date.now() - marketAt) / 1000,
+                                      ),
+                                    ),
+                                  ),
+                                ).padStart(2, "0")}
+                                s ago
+                              </span>
                             </p>
                           </>
                         )}
