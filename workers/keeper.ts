@@ -1151,6 +1151,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
                     (m) =>
                       m.interval === t.duration &&
                       (!preferredAsset || m.asset === preferredAsset) &&
+                      m.start >= t.joinDeadline - 60 &&
                       m.expiry > t.joinDeadline + 150 &&
                       m.status === 1,
                   )
@@ -1282,6 +1283,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
               (preferredAsset && m.asset !== preferredAsset) ||
               m.expiry <= Number((await client.getBlock()).timestamp) + 150 ||
               m.status !== 1 ||
+              (t.phase === 0 && m.start < t.joinDeadline - 60) ||
               (t.phase === 2 && m.start < t.expiry)
             )
               continue;

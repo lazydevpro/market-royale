@@ -283,7 +283,7 @@ export default function Home() {
     [marketAt, setMarketAt] = useState(0);
   const [scheduled, setScheduled] = useState(true),
     [minimum, setMinimum] = useState("2"),
-    [duration, setDuration] = useState("300"),
+    [duration, setDuration] = useState("900"),
     [startDelay, setStartDelay] = useState("180"),
     [assetPreference, setAssetPreference] = useState("BTC"),
     [showFinishCelebration, setShowFinishCelebration] = useState(false);
@@ -705,7 +705,9 @@ export default function Home() {
   const availableAssets = ["BTC", "ETH"].filter((asset) =>
     live.some((market) => market.status === 1 && market.asset === asset),
   );
-  const availableDurations = [300, 900, 3600].filter((seconds) =>
+  // Prefer DreamDEX's shortest documented cadence. Keep 5 minutes discoverable
+  // when the venue actually publishes that interval on Shannon.
+  const availableDurations = [900, 3600, 300].filter((seconds) =>
     live.some(
       (market) =>
         market.status === 1 &&
@@ -2228,9 +2230,11 @@ export default function Home() {
                             onChange={(e) => setDuration(e.target.value)}
                           >
                             {[
-                              [300, "5 minutes"],
                               [900, "15 minutes"],
                               [3600, "60 minutes"],
+                              ...(availableDurations.includes(300)
+                                ? ([[300, "5 minutes"]] as const)
+                                : []),
                             ].map(([seconds, label]) => {
                               const available = availableDurations.includes(
                                 Number(seconds),
@@ -2379,6 +2383,14 @@ export default function Home() {
                       {startingBankroll} tUSDC into your isolated vault. Total:{" "}
                       {cashFormat(hostSeatRaw)} tUSDC.
                     </p>
+                    {scheduled && (
+                      <p className="small muted">
+                        The royale starts on a newly opened{" "}
+                        {Number(duration) / 60}-minute DreamDEX window. If that
+                        window is unavailable, the event remains recoverable and
+                        player funds can be refunded.
+                      </p>
+                    )}
                     {!account && (
                       <p className="small">
                         Connect your wallet to create a royale.
@@ -2966,6 +2978,7 @@ export default function Home() {
                                       (!ops?.assetPreferences?.[String(t.id)] ||
                                         n.asset ===
                                           ops.assetPreferences[String(t.id)]) &&
+                                      n.start >= t.joinDeadline - 60 &&
                                       n.expiry > now + 120 &&
                                       n.status === 1,
                                   )

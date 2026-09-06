@@ -75,5 +75,7 @@ Event Contract liquidity. Trade, survive, and climb higher.”
 - Hide local-wallet controls, private browser profiles, terminal windows, and
   secret files.
 - Show at least one wallet confirmation and one Shannon explorer receipt.
+- Use the shortest interval currently published by the trusted DreamDEX venue;
+  the default is 15 minutes. Do not present a local timer as oracle settlement.
 - Cut all RPC waits and market-expiry waits.
 - Verify audio, text readability, and final duration before upload.
