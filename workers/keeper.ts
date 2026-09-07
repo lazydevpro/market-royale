@@ -952,7 +952,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
             );
             return;
           }
-          if (t.phase >= 3) {
+          if (t.phase === 3) {
             for (const player of ps) {
               const recorded = await client.readContract({
                 address: progression,
@@ -971,6 +971,8 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
                 return;
               }
             }
+          }
+          if (t.phase >= 3) {
             delete s.issues[id];
             this.ctx.storage.sql.exec("DELETE FROM managed WHERE id=?", id);
             continue;
@@ -1320,7 +1322,17 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
             : error instanceof Error
               ? error.message
               : "Event action failed";
-        s.issues[id] = { error: message, retryAt: Date.now() + 30000 };
+        const enrollmentUrgent =
+          t.phase === 0 && clock < t.joinDeadline;
+        if (enrollmentUrgent)
+          s.fastUntil = Math.max(
+            s.fastUntil ?? 0,
+            Date.now() + 2 * 60 * 1000,
+          );
+        s.issues[id] = {
+          error: message,
+          retryAt: Date.now() + (enrollmentUrgent ? 3000 : 30000),
+        };
         this.save(s);
         console.error(
           JSON.stringify({

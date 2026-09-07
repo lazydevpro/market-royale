@@ -1,12 +1,29 @@
 export const dynamic = "force-dynamic";
+const deployedKeeper =
+  process.env.EVENT_OPERATIONS_URL ??
+  "https://market-royale-keeper.lazydevpro.workers.dev";
+
+async function developmentKeeper(path: string, init?: RequestInit) {
+  try {
+    const local = await fetch(`http://127.0.0.1:8787${path}`, {
+      ...init,
+      cache: "no-store",
+      signal: AbortSignal.timeout(1500),
+    });
+    if (local.ok) return local;
+  } catch {}
+  return fetch(`${deployedKeeper}${path}`, {
+    ...init,
+    cache: "no-store",
+    signal: AbortSignal.timeout(5000),
+  });
+}
+
 export async function GET() {
   try {
     let response: Response;
     if (process.env.NODE_ENV === "development")
-      response = await fetch("http://127.0.0.1:8787/status", {
-        cache: "no-store",
-        signal: AbortSignal.timeout(5000),
-      });
+      response = await developmentKeeper("/status");
     else {
       const { getCloudflareContext } = await import("@opennextjs/cloudflare");
       const { env } = getCloudflareContext();
@@ -45,12 +62,10 @@ export async function POST(request: Request) {
       body: JSON.stringify({ matchId: body.matchId, asset: body.asset }),
     });
     if (process.env.NODE_ENV === "development")
-      response = await fetch("http://127.0.0.1:8787/wake", {
+      response = await developmentKeeper("/wake", {
         method: "POST",
         headers: wakeRequest.headers,
         body: JSON.stringify({ matchId: body.matchId, asset: body.asset }),
-        cache: "no-store",
-        signal: AbortSignal.timeout(5000),
       });
     else {
       const { getCloudflareContext } = await import("@opennextjs/cloudflare");
