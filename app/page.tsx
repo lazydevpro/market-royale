@@ -76,6 +76,74 @@ const arenaAbi = arenaArtifact.abi as Abi,
   progressionAbi = progressionArtifact.abi as Abi;
 const PHASES = ["ENROLLING", "TRADING", "NEXT ROUND", "FINISHED", "CANCELLED"];
 type Page = "arena" | "game" | "profile" | "wallet" | "history" | "rules";
+const ROUTE_LOADING: Record<
+  Exclude<Page, "rules">,
+  { eyebrow: string; title: string; copy: string; asset: string }
+> = {
+  arena: {
+    eyebrow: "SHANNON TESTNET",
+    title: "OPENING THE ARENA",
+    copy: "Reading live royales, players, and market windows…",
+    asset: "/art/vendor/fluent-emoji/trophy-3d.png",
+  },
+  game: {
+    eyebrow: "VERIFIED ON-CHAIN STATE",
+    title: "LOADING ROYALE",
+    copy: "Syncing the lobby, bankrolls, and current round…",
+    asset: "/art/vendor/fluent-emoji/crossed-swords-3d.png",
+  },
+  wallet: {
+    eyebrow: "PLAYER SETUP",
+    title: "CHECKING YOUR WALLET",
+    copy: "Reading balances, allowances, and arena access…",
+    asset: "/art/vendor/fluent-emoji/coin-3d.png",
+  },
+  profile: {
+    eyebrow: "PLAYER PROGRESSION",
+    title: "LOADING YOUR RECORD",
+    copy: "Reading league rating, season XP, and badges…",
+    asset: "/art/vendor/fluent-emoji/gem-stone-3d.png",
+  },
+  history: {
+    eyebrow: "SETTLED ON SHANNON",
+    title: "LOADING MATCH HISTORY",
+    copy: "Reading completed royales and verified results…",
+    asset: "/art/vendor/fluent-emoji/stopwatch-3d.png",
+  },
+};
+
+function RouteLoading({ page, matchId }: { page: Page; matchId: number }) {
+  if (page === "rules") return null;
+  const content = ROUTE_LOADING[page];
+  return (
+    <section
+      className={`mr-route-loading mr-route-loading-${page}`}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <div className="mr-route-loading-hero">
+        <div className="mr-route-loading-art" aria-hidden="true">
+          <img src={content.asset} width="256" height="256" alt="" />
+        </div>
+        <div className="mr-route-loading-copy">
+          <span className="eyebrow">{content.eyebrow}</span>
+          <h1>
+            {page === "game" && matchId
+              ? `LOADING ROYALE #${matchId}`
+              : content.title}
+          </h1>
+          <p>{content.copy}</p>
+        </div>
+      </div>
+      <div className="mr-route-loading-grid" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+    </section>
+  );
+}
 const LEAGUES = ["Bronze", "Silver", "Gold", "Diamond", "Champion"];
 const BADGES = [
   {
@@ -273,13 +341,19 @@ export default function Home() {
     [registryDraft, setRegistryDraft] = useState(""),
     [selected, setSelected] = useState(0),
     [before, setBefore] = useState(0);
-  const [snapshot, setSnapshot] = useState<Snapshot | null>(null),
+  const [snapshotData, setSnapshot] = useState<Snapshot | null>(null),
+    [snapshotKey, setSnapshotKey] = useState(""),
     [live, setLive] = useState<LiveMarket[]>([]),
-    [progression, setProgression] = useState<ProgressionSnapshot | null>(null),
+    [progressionData, setProgression] = useState<ProgressionSnapshot | null>(
+      null,
+    ),
+    [progressionKey, setProgressionKey] = useState(""),
     [progressionLoading, setProgressionLoading] = useState(false),
     [progressionError, setProgressionError] = useState(""),
+    [progressionErrorKey, setProgressionErrorKey] = useState(""),
     [marketError, setMarketError] = useState(""),
     [stateError, setStateError] = useState(""),
+    [stateErrorKey, setStateErrorKey] = useState(""),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [pending, setPending] = useState("");
@@ -321,13 +395,25 @@ export default function Home() {
     [quantity, setQuantity] = useState("2"),
     [price, setPrice] = useState(""),
     [accepted, setAccepted] = useState(false);
-  const [activity, setActivity] = useState<Activity[]>([]),
-    [loading, setLoading] = useState(false);
+  const [activity, setActivity] = useState<Activity[]>([]);
   const busy = useRef(false),
     battleMeRef = useRef<HTMLDivElement>(null),
     finishDialogRef = useRef<HTMLElement>(null),
     selectedWallet = wallets.find((w) => w.id === walletId),
     provider = selectedWallet?.provider;
+  const snapshotRequestKey = `${chain ?? ""}:${registry?.toLowerCase() ?? ""}:${account?.toLowerCase() ?? ""}:${selected}:${before}`;
+  const progressionRequestKey = `${account?.toLowerCase() ?? ""}:${selected}`;
+  const snapshot = snapshotKey === snapshotRequestKey ? snapshotData : null;
+  const progression =
+    progressionKey === progressionRequestKey ? progressionData : null;
+  const activeStateError =
+    stateErrorKey === snapshotRequestKey ? stateError : "";
+  const activeProgressionError =
+    progressionErrorKey === progressionRequestKey ? progressionError : "";
+  const invalidateSnapshot = () => {
+    setSnapshot(null);
+    setSnapshotKey("");
+  };
   const refresh = () => setTick((t) => t + 1);
   const go = (p: Page) => {
     const url = new URL(location.href);
@@ -349,7 +435,7 @@ export default function Home() {
   const saveRegistry = (address: Address) => {
     setRegistry(address);
     setRegistryDraft(address);
-    setSnapshot(null);
+    invalidateSnapshot();
     setBefore(0);
     localStorage.setItem("market-royale-registry-v1", address);
     const url = new URL(location.href);
@@ -451,11 +537,11 @@ export default function Home() {
     const changed = (value: unknown) => {
       const addresses = value as Address[];
       setAccount(addresses[0] ?? null);
-      setSnapshot(null);
+      invalidateSnapshot();
     };
     const chainChanged = (value: unknown) => {
       setChain(Number(value));
-      setSnapshot(null);
+      invalidateSnapshot();
     };
     provider
       .request({ method: "eth_accounts" })
@@ -517,11 +603,11 @@ export default function Home() {
   useEffect(() => {
     if (!ready) return;
     const abort = new AbortController();
+    const requestKey = snapshotRequestKey;
     let running = false;
     const load = async () => {
       if (running) return;
       running = true;
-      setLoading(true);
       try {
         const q = new URLSearchParams();
         if (registry) q.set("registry", registry);
@@ -534,16 +620,18 @@ export default function Home() {
         );
         if (!abort.signal.aborted) {
           setSnapshot(data);
+          setSnapshotKey(requestKey);
           setSyncedAt(Date.now());
           setStateError("");
+          setStateErrorKey("");
         }
       } catch (e) {
         if (!abort.signal.aborted) {
           setStateError(explain(e));
+          setStateErrorKey(requestKey);
         }
       } finally {
         running = false;
-        if (!abort.signal.aborted) setLoading(false);
       }
     };
     void load();
@@ -552,7 +640,7 @@ export default function Home() {
       abort.abort();
       clearInterval(timer);
     };
-  }, [ready, registry, account, selected, before, tick]);
+  }, [ready, snapshotRequestKey, tick]);
   useEffect(() => {
     const abort = new AbortController();
     const load = () =>
@@ -569,6 +657,7 @@ export default function Home() {
   useEffect(() => {
     if (!ready) return;
     const abort = new AbortController();
+    const requestKey = progressionRequestKey;
     let running = false;
     const load = async () => {
       if (running) return;
@@ -584,10 +673,15 @@ export default function Home() {
         );
         if (!abort.signal.aborted) {
           setProgression(data);
+          setProgressionKey(requestKey);
           setProgressionError("");
+          setProgressionErrorKey("");
         }
       } catch (e) {
-        if (!abort.signal.aborted) setProgressionError(explain(e));
+        if (!abort.signal.aborted) {
+          setProgressionError(explain(e));
+          setProgressionErrorKey(requestKey);
+        }
       } finally {
         running = false;
         if (!abort.signal.aborted) setProgressionLoading(false);
@@ -599,7 +693,7 @@ export default function Home() {
       abort.abort();
       clearInterval(timer);
     };
-  }, [ready, account, selected, tick]);
+  }, [ready, progressionRequestKey, tick]);
   const t = snapshot?.selected,
     m = snapshot?.market;
   const hostEntryRaw = BigInt(entryFee) * 1_000_000n;
@@ -693,7 +787,7 @@ export default function Home() {
   const fresh = Boolean(
     snapshot &&
     (!account ? snapshot.account === null : eq(snapshot.account, account)) &&
-    !stateError &&
+    !activeStateError &&
     Date.now() - syncedAt < 30000,
   );
   const connected = Boolean(account && provider && chain === CHAIN_ID);
@@ -1278,6 +1372,18 @@ export default function Home() {
     });
   const statusText = t ? PHASES[t.phase] : "";
   const playerProgress = progression?.profile;
+  const snapshotSettled =
+    snapshotKey === snapshotRequestKey || stateErrorKey === snapshotRequestKey;
+  const progressionSettled =
+    progressionKey === progressionRequestKey ||
+    progressionErrorKey === progressionRequestKey;
+  const routeLoading =
+    ((page === "arena" ||
+      page === "game" ||
+      page === "wallet" ||
+      page === "history") &&
+      !snapshotSettled) ||
+    (page === "profile" && Boolean(account) && !progressionSettled);
   const seasonLevel = Number(playerProgress?.level ?? 1);
   const seasonXp = Number(playerProgress?.seasonXp ?? 0);
   const levelFloor = [0, 0, 500, 1000, 2500, 5000][seasonLevel] ?? 0;
@@ -1427,7 +1533,7 @@ export default function Home() {
               value={walletId}
               onChange={(e) => {
                 setAccount(null);
-                setSnapshot(null);
+                invalidateSnapshot();
                 setWalletId(e.target.value);
               }}
             >
@@ -1612,9 +1718,9 @@ export default function Home() {
               </button>
             </div>
           )}
-          {(error || stateError) && (
+          {(error || activeStateError) && (
             <div className="tn-alert" role="alert">
-              <div>{error || stateError}</div>
+              <div>{error || activeStateError}</div>
               <button
                 className="icon-button"
                 onClick={() => {
@@ -1671,8 +1777,12 @@ export default function Home() {
             </div>
           )}
         </div>
-        <main className={`mr-page mr-page-${page}`}>
-          {page === "arena" && (
+        <main
+          className={`mr-page mr-page-${page}`}
+          aria-busy={routeLoading || undefined}
+        >
+          {routeLoading && <RouteLoading page={page} matchId={selected} />}
+          {!routeLoading && page === "arena" && (
             <>
               <section className="mr-lobby" id="arena">
                 {renderBrandMasthead()}
@@ -1987,7 +2097,7 @@ export default function Home() {
                           value={walletId}
                           onChange={(event) => {
                             setAccount(null);
-                            setSnapshot(null);
+                            invalidateSnapshot();
                             setWalletId(event.target.value);
                           }}
                         >
@@ -2663,7 +2773,7 @@ export default function Home() {
               </section>
             </>
           )}
-          {page === "game" && (
+          {!routeLoading && page === "game" && (
             <>
               {showFinishCelebration && t?.phase === 3 && me && (
                 <div className="mr-finish-overlay">
@@ -2849,7 +2959,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                   <h2>
-                    {loading ? "Loading on-chain match…" : "Choose a royale"}
+                    {selected ? "Royale unavailable" : "Choose a royale"}
                   </h2>
                   <p>
                     {selected
@@ -4634,7 +4744,7 @@ export default function Home() {
               )}
             </>
           )}
-          {page === "wallet" && (
+          {!routeLoading && page === "wallet" && (
             <>
               <div className="page-heading">
                 <span className="eyebrow">SOMNIA SHANNON · 50312</span>
@@ -4801,7 +4911,7 @@ export default function Home() {
                         {short(registry)} on Shannon explorer ↗
                       </a>{" "}
                       ·{" "}
-                      {snapshot?.registry && !stateError
+                      {snapshot?.registry && !activeStateError
                         ? "Bytecode verified"
                         : "Verification pending"}
                     </p>
@@ -4934,7 +5044,7 @@ export default function Home() {
               </section>
             </>
           )}
-          {page === "profile" && (
+          {!routeLoading && page === "profile" && (
             <>
               <div className="page-heading">
                 <span className="eyebrow">
@@ -4972,11 +5082,11 @@ export default function Home() {
                 >
                   <span className="tn-spinner" /> Loading on-chain progression…
                 </section>
-              ) : progressionError ? (
+              ) : activeProgressionError ? (
                 <section className="panel tn-empty" role="alert">
                   <RefreshCw size={34} />
                   <h2>Progression is temporarily unavailable</h2>
-                  <p>{progressionError}</p>
+                  <p>{activeProgressionError}</p>
                   <button className="button blue" onClick={refresh}>
                     RETRY
                   </button>
@@ -5145,7 +5255,7 @@ export default function Home() {
               )}
             </>
           )}
-          {page === "history" && ops?.log?.length ? (
+          {!routeLoading && page === "history" && ops?.log?.length ? (
             <section className="panel tn-spacing tn-operator-receipts">
               <h2>EVENT OPERATOR RECEIPTS</h2>
               {ops.log.slice(0, 20).map((item) => (
@@ -5158,7 +5268,7 @@ export default function Home() {
               ))}
             </section>
           ) : null}
-          {page === "history" && (
+          {!routeLoading && page === "history" && (
             <>
               <div className="page-heading">
                 <span className="eyebrow">SETTLED ON SHANNON</span>
