@@ -5363,111 +5363,194 @@ export default function Home() {
           {page === "rules" && (
             <>
               <div className="page-heading">
-                <span className="eyebrow">TRADE. SURVIVE. WIN.</span>
-                <h1>HOW THE TESTNET ROYALE WORKS</h1>
+                <span className="eyebrow">SIX SIMPLE STEPS · REAL TESTNET TRADES</span>
+                <h1>HOW MARKET ROYALE WORKS</h1>
+                <p>
+                  Every player accepts the same entry, starts with the same
+                  trading vault, and competes for one shared prize pool.
+                </p>
               </div>
-              <div className="detail-grid">
-                <section className="panel">
-                  <div className="rules-list">
-                    {[
-                      [
-                        "Fund your seat",
-                        "The host selects the entry contribution and equal starting vault. Every entrant accepts the same terms; STT pays gas.",
-                        "/art/vendor/fluent-emoji/coin-3d.png",
-                      ],
-                      [
-                        "Trade the same market",
-                        "Buy or sell UP and DOWN event shares on DreamDEX as often as useful until market close. Orders execute immediately against real liquidity; the remainder cancels. Holding cash is also a valid strategy, but a round with zero fills across the whole field is cancelled.",
-                        "/art/vendor/fluent-emoji/crossed-swords-3d.png",
-                      ],
-                      [
-                        "Survive actual settlement",
-                        "The oracle determines the payout. After all vaults settle, the bottom half is cut. Cash plus redeemed outcomes determine rank. Ties favor earlier on-chain entry.",
-                        "/art/vendor/fluent-emoji/shield-3d.png",
-                      ],
-                      [
-                        "Play through to the crown",
-                        "The bankroll carries between rounds. The host selects up to four rounds. With two remaining, or on the final scheduled round, the highest bankroll wins.",
-                        "/art/vendor/fluent-emoji/trophy-3d.png",
-                      ],
-                    ].map(([title, copy, asset], i) => (
-                      <div className="rule" key={title}>
-                        <span className="tn-rule-art">
-                          <img
-                            src={asset}
-                            width="256"
-                            height="256"
-                            alt=""
-                            aria-hidden="true"
-                          />
-                          <strong>0{i + 1}</strong>
-                        </span>
-                        <div>
-                          <h3>{title}</h3>
-                          <p>{copy}</p>
-                        </div>
+              <section className="panel mr-rules-money">
+                <div className="mr-rules-money-copy">
+                  <span className="eyebrow">ONE SEAT · TWO PURPOSES</span>
+                  <h2>YOUR PAYMENT SPLITS BEFORE THE GAME STARTS</h2>
+                  <p>
+                    Example event terms: every player supplies the same 12
+                    tUSDC. The host chooses these amounts before enrollment and
+                    cannot give any player a larger starting vault.
+                  </p>
+                </div>
+                <div className="mr-rules-money-flow" aria-label="Example entry split">
+                  <div className="mr-rules-total">
+                    <img
+                      src="/art/objects/tusdc-stack@1x.webp"
+                      width="256"
+                      height="256"
+                      alt=""
+                      aria-hidden="true"
+                    />
+                    <span>YOU FUND</span>
+                    <strong>12 tUSDC</strong>
+                  </div>
+                  <span className="mr-rules-flow-arrow" aria-hidden="true">→</span>
+                  <div className="mr-rules-split pool">
+                    <span>2 tUSDC ENTRY</span>
+                    <strong>SHARED PRIZE POOL</strong>
+                    <small>Combined with every player&apos;s entry</small>
+                  </div>
+                  <span className="mr-rules-plus" aria-hidden="true">+</span>
+                  <div className="mr-rules-split vault">
+                    <span>10 tUSDC BANKROLL</span>
+                    <strong>YOUR TRADING VAULT</strong>
+                    <small>Grows or falls with your DreamDEX trades</small>
+                  </div>
+                </div>
+              </section>
+
+              <section className="mr-rules-steps" aria-label="Six game steps">
+                {[
+                  {
+                    title: "Host chooses the game",
+                    copy: "The host picks BTC or ETH, the player limit, the entry amount, the starting vault, and one to four rounds.",
+                    asset: "/art/objects/timer@1x.webp",
+                  },
+                  {
+                    title: "Everyone funds the same seat",
+                    copy: "Every player pays the same entry and receives the same starting vault. Nobody can begin with more trading money.",
+                    asset: "/art/objects/gem@1x.webp",
+                  },
+                  {
+                    title: "Entry and vault separate",
+                    copy: "Your entry joins the shared prize pool. Your starting vault stays in your own game account for trading.",
+                    asset: "/art/objects/prize-stack@1x.webp",
+                  },
+                  {
+                    title: "Trade the same market",
+                    copy: "Everyone trades UP and DOWN on the same live DreamDEX market. Buy, sell, or hold cash until the market closes.",
+                    asset: "/art/objects/duel-swords@1x.webp",
+                  },
+                  {
+                    title: "The oracle ranks every vault",
+                    copy: "After settlement, winning shares become tUSDC. Players are ranked by total vault value. In a multi-round game, the bottom half is cut.",
+                    asset: "/art/objects/open-royale-shield@1x.webp",
+                  },
+                  {
+                    title: "Winners claim and progress",
+                    copy: "Players withdraw their remaining vault. Top finishers also share the prize pool and earn rating, season XP, leagues, and achievement badges.",
+                    asset: "/art/vendor/fluent-emoji/trophy-3d.png",
+                  },
+                ].map((step, index) => (
+                  <article className="panel mr-rules-step" key={step.title}>
+                    <span className="tn-rule-art">
+                      <img
+                        src={step.asset}
+                        width="256"
+                        height="256"
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      <strong>{index + 1}</strong>
+                    </span>
+                    <div>
+                      <span className="eyebrow">STEP {index + 1}</span>
+                      <h2>{step.title}</h2>
+                      <p>{step.copy}</p>
+                    </div>
+                  </article>
+                ))}
+              </section>
+
+              <div className="mr-rules-detail-grid">
+                <section className="panel mr-rules-modes">
+                  <span className="eyebrow">PICK THE FORMAT</span>
+                  <h2>ONE ROUND OR A FULL ROYALE</h2>
+                  <div className="mr-rules-mode-grid">
+                    <article>
+                      <img
+                        src="/art/vendor/fluent-emoji/stopwatch-3d.png"
+                        width="256"
+                        height="256"
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <strong>SINGLE ROUND</strong>
+                        <p>
+                          One market, one settlement, then the final rankings
+                          and prize payout. Best for a quick match.
+                        </p>
                       </div>
-                    ))}
+                    </article>
+                    <article>
+                      <img
+                        src="/art/vendor/fluent-emoji/shield-3d.png"
+                        width="256"
+                        height="256"
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <strong>2–4 ROUNDS</strong>
+                        <p>
+                          Each settled market cuts the bottom half. Survivors
+                          keep the bankroll they earned and trade again until
+                          the final round or two players remain.
+                        </p>
+                      </div>
+                    </article>
                   </div>
                 </section>
-                <section className="panel">
-                  <h2>EVERY TOKEN ACCOUNTED FOR</h2>
+
+                <section className="panel mr-rules-payouts">
+                  <span className="eyebrow">SHARED ENTRY POOL</span>
+                  <h2>HOW WINNERS ARE PAID</h2>
                   <dl>
                     <div>
                       <dt>2-player duel</dt>
-                      <dd>Winner takes 100% of the funded pot</dd>
+                      <dd>Winner receives 100%</dd>
                     </div>
                     <div>
-                      <dt>3+ entrants · 1st</dt>
+                      <dt>3+ players · 1st</dt>
                       <dd>62.5%*</dd>
                     </div>
                     <div>
-                      <dt>2nd</dt>
+                      <dt>2nd place</dt>
                       <dd>23.4375%</dd>
                     </div>
                     <div>
-                      <dt>3rd</dt>
+                      <dt>3rd place</dt>
                       <dd>14.0625%</dd>
                     </div>
                   </dl>
                   <p className="small muted">
-                    *First place receives any rounding remainder. Payouts scale
-                    with the actual funded entry pool selected for that event.
-                    The arena takes no entry-pool cut.
+                    *First receives any rounding remainder. The arena takes no
+                    cut from the funded entry pool.
                   </p>
-                  <h3>Starting & advancing</h3>
-                  <p>
-                    After enrollment, anyone can start. Anyone can submit
-                    settlement batches after resolution. Between rounds, anyone
-                    can select a fresh market from the same verified DreamDEX
-                    creator, venue, and window length. BTC and ETH windows are
-                    both eligible; all survivors trade the selected market.
-                  </p>
-                  <h3>Delays & refunds</h3>
-                  <p>
-                    Fewer than the host&apos;s declared minimum entrants or a
-                    missed start unlock cancellation. A stalled oracle or next
-                    round can be cancelled after 15 minutes. Players reclaim
-                    entries and withdraw cash plus any unsettled shares, which
-                    retain their DreamDEX redemption rights.
-                  </p>
-                  <h3>Real testnet only</h3>
-                  <p>
-                    No simulated players, balances, prices, fills, or results.
-                    No mainnet option. Testnet tokens have no monetary value.
-                    Liquidity and oracle availability depend on the live
-                    DreamDEX testnet.
-                  </p>
-                  <a
-                    className="text-link"
-                    href="https://github.com/IronicDeGawd/ec-dreamdex-hackathon-template"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    DreamDEX integration reference <ExternalLink size={14} />
-                  </a>
                 </section>
               </div>
+
+              <section className="panel mr-rules-safety">
+                <div>
+                  <span className="eyebrow">FAIR PLAY</span>
+                  <h2>WHAT HAPPENS IF A GAME CANNOT FINISH?</h2>
+                </div>
+                <p>
+                  If the minimum player count is missed, the market or oracle
+                  stalls, or the next round cannot start, recovery becomes
+                  available. Players reclaim their entry and withdraw their
+                  remaining vault or unsettled shares. All balances, fills,
+                  rankings, and payouts shown here come from Somnia Shannon
+                  testnet contracts; testnet tokens have no monetary value.
+                </p>
+                <a
+                  className="text-link"
+                  href="https://github.com/IronicDeGawd/ec-dreamdex-hackathon-template"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  DreamDEX integration reference <ExternalLink size={14} />
+                </a>
+              </section>
             </>
           )}
         </main>
