@@ -354,6 +354,7 @@ export default function Home() {
     [marketError, setMarketError] = useState(""),
     [stateError, setStateError] = useState(""),
     [stateErrorKey, setStateErrorKey] = useState(""),
+    [dismissedOperatorIssue, setDismissedOperatorIssue] = useState(""),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [pending, setPending] = useState("");
@@ -1371,6 +1372,10 @@ export default function Home() {
       );
     });
   const statusText = t ? PHASES[t.phase] : "";
+  const operatorIssue = t ? ops?.issues?.[t.id] : undefined;
+  const operatorIssueKey = operatorIssue
+    ? `${t!.id}:${operatorIssue.error}`
+    : "";
   const playerProgress = progression?.profile;
   const snapshotSettled =
     snapshotKey === snapshotRequestKey || stateErrorKey === snapshotRequestKey;
@@ -1733,10 +1738,19 @@ export default function Home() {
               </button>
             </div>
           )}
-          {t && ops?.issues?.[t.id] && (
-            <div className="tn-alert">
-              Event operator: {ops.issues[t.id].error} Retrying automatically;
-              manual controls remain available.
+          {operatorIssue && operatorIssueKey !== dismissedOperatorIssue && (
+            <div className="tn-alert" role="alert">
+              <div>
+                Event operator: {operatorIssue.error} Retrying automatically;
+                manual controls remain available.
+              </div>
+              <button
+                className="icon-button"
+                aria-label="Dismiss event operator alert"
+                onClick={() => setDismissedOperatorIssue(operatorIssueKey)}
+              >
+                <X size={16} />
+              </button>
             </div>
           )}
           {pending && (

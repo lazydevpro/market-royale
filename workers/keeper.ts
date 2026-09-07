@@ -86,6 +86,12 @@ function serial<T>(value: unknown): T {
     JSON.stringify(value, (_, v) => (typeof v === "bigint" ? String(v) : v)),
   );
 }
+function royaleIdFromLabel(label: string) {
+  const match = /\broyale\s+(\d+)\b/i.exec(label);
+  if (!match) return null;
+  const id = Number(match[1]);
+  return Number.isSafeInteger(id) && id > 0 ? id : null;
+}
 export class EventKeeper extends DurableObject<KeeperEnv> {
   constructor(ctx: DurableObjectState, env: KeeperEnv) {
     super(ctx, env);
@@ -559,15 +565,20 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
       s.spent = String(
         BigInt(s.spent) + receipt.gasUsed * receipt.effectiveGasPrice,
       );
+      const completedLabel = s.pending.label;
       s.log = [
         {
           time: Date.now(),
-          label: s.pending.label,
+          label: completedLabel,
           hash: s.pending.hash,
           status: receipt.status,
         },
         ...s.log,
       ].slice(0, 100);
+      if (receipt.status === "success") {
+        const completedRoyale = royaleIdFromLabel(completedLabel);
+        if (completedRoyale !== null) delete s.issues?.[completedRoyale];
+      }
       s.pending = null;
       s.lastSuccess = Date.now();
       this.save(s);
