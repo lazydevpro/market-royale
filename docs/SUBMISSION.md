@@ -4,11 +4,10 @@ Prepared for the **Somnia × DreamDEX Event Contracts Hackathon**.
 
 ## Required links
 
-Complete these three fields after the repository, Cloudflare build, and video
-are published:
+Use these links in the DoraHacks submission:
 
 - **Working prototype:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
-- **Source code:** `ADD_PUBLIC_GITHUB_URL`
+- **Source code:** [github.com/lazydevpro/market-royale](https://github.com/lazydevpro/market-royale)
 - **2–3 minute demo video:** `ADD_YOUTUBE_OR_LOOM_URL`
 
 ## Project name
@@ -83,8 +82,7 @@ All three are linked through the Shannon explorer in the repository README.
 
 ## Team
 
-Add the builder name, role, GitHub profile, and one contact link before
-submission.
+- **LazyDevPro** — solo builder · [GitHub](https://github.com/lazydevpro)
 
 ## Final submission checklist
 
@@ -96,6 +94,6 @@ submission.
 - [x] Hackathon presentation deck
 - [x] Optional SDK and documentation feedback report
 - [x] Public Cloudflare URL added above and tested
-- [ ] Public GitHub URL added above
+- [x] Public GitHub URL added above
 - [ ] Demo video uploaded and linked above
-- [ ] Builder identity and contact links added
+- [x] Builder identity and contact link added

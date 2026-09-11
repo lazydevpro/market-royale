@@ -25,7 +25,7 @@
     "prediction-markets",
     "onchain-game"
   ],
-  "author": "",
+  "author": "LazyDevPro",
   "license": "PolyForm-Noncommercial-1.0.0",
   "engines": {
     "node": ">=24"
