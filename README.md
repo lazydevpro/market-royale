@@ -69,10 +69,13 @@ The Cloudflare operator discovers eligible events, checks two-sided depth, backf
 | Market Royale V5          | [`0x4a17…0cd`](https://shannon-explorer.somnia.network/address/0x4a17dc5e798e68060e6e8cadbf795531557880cd) |
 | Progression and badges V4 | [`0xaecf…c54`](https://shannon-explorer.somnia.network/address/0xaecf844569aba92494947bc4edf8e268c31b5c54) |
 | Liquidity sponsor         | [`0x24a4…701`](https://shannon-explorer.somnia.network/address/0x24a43ad7e9318cf515867477bf9c489989dcc701) |
+| Player vault factory      | [`0x24Ad…15dF`](https://shannon-explorer.somnia.network/address/0x24Ad3423E65e3a7D03F03e2bE8b695Eb822b15dF) |
 | DreamDEX binary module    | [`0x3ecC…388`](https://shannon-explorer.somnia.network/address/0x3ecC694Cef705358864a646142ac17A90E29e388) |
 | tUSDC collateral          | [`0x70a8…d8E`](https://shannon-explorer.somnia.network/address/0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E) |
 
 Deployment receipts and transaction hashes are committed in [`deployments/shannon-v5.json`](deployments/shannon-v5.json), [`deployments/shannon-progression-v4.json`](deployments/shannon-progression-v4.json), and [`deployments/shannon-training-bots.json`](deployments/shannon-training-bots.json). Older journals remain as regression and recovery evidence.
+
+The arena, progression sidecar, liquidity sponsor, vault factory, and all 18 TraderVault instances created by the active arena are fully source verified. Compiler settings, constructor matching, and direct links are recorded in [`deployments/EXPLORER-VERIFICATION.md`](deployments/EXPLORER-VERIFICATION.md).
 
 ## Run locally
 
