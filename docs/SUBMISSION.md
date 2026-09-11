@@ -8,7 +8,7 @@ Use these links in the DoraHacks submission:
 
 - **Working prototype:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
 - **Source code:** [github.com/lazydevpro/market-royale](https://github.com/lazydevpro/market-royale)
-- **2–3 minute demo video:** `ADD_YOUTUBE_OR_LOOM_URL`
+- **2–3 minute demo video:** [youtu.be/YLndsqLW0_M](https://youtu.be/YLndsqLW0_M)
 
 ## Project name
 
@@ -54,6 +54,18 @@ Market Royale gives DreamDEX a consumer format designed to attract new users,
 generate repeated Event Contract order flow, and grow from quick duels into
 scheduled community tournaments.
 
+## Project links
+
+- **Play the Shannon testnet build:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
+- **Watch the demo:** [Market Royal: Battle royal on DreamDex](https://youtu.be/YLndsqLW0_M)
+- **Review the source:** [github.com/lazydevpro/market-royale](https://github.com/lazydevpro/market-royale)
+- **Read the setup and architecture:** [README](https://github.com/lazydevpro/market-royale#readme)
+- **Download the presentation:** [Market Royale hackathon deck](https://github.com/lazydevpro/market-royale/raw/main/submission/Market-Royale-Hackathon-Deck.pptx)
+- **Read the DreamDEX SDK feedback:** [SDK_FEEDBACK.md](https://github.com/lazydevpro/market-royale/blob/main/docs/SDK_FEEDBACK.md)
+- **Inspect the arena contract:** [Market Royale V5 on Shannon Explorer](https://shannon-explorer.somnia.network/address/0x4a17dc5e798e68060e6e8cadbf795531557880cd)
+- **Inspect progression and badges:** [Progression V4 on Shannon Explorer](https://shannon-explorer.somnia.network/address/0xaecf844569aba92494947bc4edf8e268c31b5c54)
+- **Inspect sponsored liquidity:** [Liquidity sponsor on Shannon Explorer](https://shannon-explorer.somnia.network/address/0x24a43ad7e9318cf515867477bf9c489989dcc701)
+
 ## Core technology
 
 - Somnia Shannon testnet, chain 50312
@@ -95,5 +107,5 @@ All three are linked through the Shannon explorer in the repository README.
 - [x] Optional SDK and documentation feedback report
 - [x] Public Cloudflare URL added above and tested
 - [x] Public GitHub URL added above
-- [ ] Demo video uploaded and linked above
+- [x] Demo video uploaded and linked above
 - [x] Builder identity and contact link added

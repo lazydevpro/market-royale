@@ -6,6 +6,8 @@ Built for the [Somnia × DreamDEX Event Contracts Hackathon](https://dorahacks.i
 
 **Play the public testnet build:** [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev)
 
+**Watch the 2–3 minute demo:** [Market Royal: Battle royal on DreamDex](https://youtu.be/YLndsqLW0_M)
+
 ![Market Royale arena](docs/market-royale-arena.jpg)
 
 ## Why Market Royale
@@ -115,6 +117,7 @@ The gate runs TypeScript checks, the local EVM contract suite, and a production 
 
 ## Submission material
 
+- [Demo video](https://youtu.be/YLndsqLW0_M)
 - [Hackathon presentation deck](submission/Market-Royale-Hackathon-Deck.pptx)
 - [DoraHacks submission copy](docs/SUBMISSION.md)
 - [2–3 minute demo script](docs/DEMO_SCRIPT.md)
