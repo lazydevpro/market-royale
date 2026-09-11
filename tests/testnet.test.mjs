@@ -787,12 +787,9 @@ test("real transaction lifecycle: isolated bankrolls, constrained trades, cuts, 
     );
     assert.equal(
       (
-        await read(
-          "MarketRoyaleProgression",
-          progression,
-          "profileOf",
-          [passivePlayer.wallet],
-        )
+        await read("MarketRoyaleProgression", progression, "profileOf", [
+          passivePlayer.wallet,
+        ])
       ).completed,
       1,
       "every ranked finish can be recorded even when the player held cash",
@@ -803,7 +800,9 @@ test("real transaction lifecycle: isolated bankrolls, constrained trades, cuts, 
     await advance(secondsUntilDelayedRollover);
     const delayedRolloverAt = await now();
     await send("MarketRoyaleProgression", progression, "startNextSeason", [
-      BigInt(delayedRolloverAt + 30 * 24 * 60 * 60),
+      // Leave headroom for the transaction block timestamp to advance after
+      // simulation on slower CI runners.
+      BigInt(delayedRolloverAt + 30 * 24 * 60 * 60 + 60),
     ]);
     assert.equal(
       await read("MarketRoyaleProgression", progression, "VERSION"),
