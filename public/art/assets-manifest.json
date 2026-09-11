@@ -34,6 +34,19 @@
       "owner": "Market Royale"
     },
     {
+      "id": "market-royale-square-logo",
+      "kind": "brand",
+      "status": "ready",
+      "sourcePng": "/art/brand/market-royale-square-logo.png",
+      "webp1x": "/art/brand/market-royale-square-logo@1x.webp",
+      "webp2x": "/art/brand/market-royale-square-logo@2x.webp",
+      "sourceSize": [1254, 1254],
+      "dominantColor": "#6C2CE8",
+      "safeCrop": "square; preserve the cyan outer padding and complete purple badge",
+      "alt": "Market Royale golden crown and cyan gem logo",
+      "owner": "Market Royale"
+    },
+    {
       "id": "crown-host-inviting",
       "kind": "character",
       "status": "ready",

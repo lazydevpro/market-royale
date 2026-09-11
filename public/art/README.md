@@ -6,6 +6,8 @@ Use the `@1x.webp` files for compact UI placements up to 256 CSS pixels and `@2x
 
 The `market-royale-thank-you` banner uses the same cyan sky gradient as the website and is intentionally opaque. Its 768 px and 1536 px WebP variants support full-width celebration and presentation layouts.
 
+The `market-royale-square-logo` is the compact brand mark for app icons, social profiles, and square repository artwork. Its crown, cyan gem, purple badge, and market-arrow detail remain legible down to favicon scale.
+
 The ready set is listed in `assets-manifest.json`. Files under `brand/` and `source-sheets/` are drafts and should not be shipped unless their manifest status changes.
 
 The crown host and Nova are original Market Royale character concepts. They should remain separate from borrowed Figma Community packs so the product identity and later cosmetic system can evolve consistently.
