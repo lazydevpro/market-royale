@@ -109,6 +109,7 @@ Contract tests use a local EVM and protocol mocks. They cover entry/exit, duplic
 
 Public-network journals are separate:
 
+- `deployments/v5-quick-match-e2e.json`: completed current V5 two-wallet quick match with real opposing DreamDEX fills, oracle settlement, payouts, progression, and badge mints.
 - `deployments/shannon-e2e.json`: completed historical V1 two-wallet match, actual fills, oracle result and all payouts.
 - `deployments/shannon-v5.json`: current arena and its original progression deployment receipts.
 - `deployments/shannon-progression-v3.json`: rollover-safe V3 progression deployment, reserve funding, and test-player verification receipts.
@@ -120,17 +121,18 @@ Public-network journals are separate:
 - `deployments/v2-playable-e2e.json`: completed V2 match #6 with two real trades, oracle settlement, prize payment and both vault withdrawals.
 
 ```sh
+node scripts/v5-quick-match-e2e.mjs
 node scripts/v3-playable-e2e.mjs
 node scripts/v3-progression-e2e.mjs
 ```
 
-The runner checks fresh Shannon blocks, schedules an event, funds and enters the two local players, submits real trades, and waits for the **keeper** to start, settle and pay. Its signed pending transaction is persisted locally before broadcasting. It waits up to five minutes for network recovery and records a pause if unavailable; rerun to resume. Never run this simultaneously with browser transactions from the same local wallets.
+The V5 runner selects a suitable live BTC or ETH market, creates a quick match with a two-minute lobby, enters two local players, submits opposing real trades, and waits for the **keeper** to start, settle, pay, and record progression. Its signed pending transaction is persisted locally before broadcasting. It waits up to five minutes for network recovery and records a pause if unavailable; rerun to resume. Never run this simultaneously with browser transactions from the same local wallets. The older V3 runners remain for historical recovery exercises.
 
 The archived `scripts/testnet-e2e.mjs` and `tests/game.reference.mjs` concern V1 and the original reference simulation respectively; they do not prove current V5 behavior or run in the current test gate.
 
 ## Cloudflare
 
-Cloudflare hosts both the Next.js app through OpenNext and the event operator through Workers/Durable Objects. No separate database, VM or container is required. Current work is local; public deployment has not been performed.
+Cloudflare hosts both the Next.js app through OpenNext and the event operator through Workers/Durable Objects. No separate database, VM or container is required. The public Shannon build is live at [market-royale-web.lazydevpro.workers.dev](https://market-royale-web.lazydevpro.workers.dev); local development uses the same on-chain contracts with local-only test wallets.
 
 ```sh
 npm run build:cloudflare
@@ -139,6 +141,6 @@ npm run preview:cloudflare
 
 Production preview is on port 3001 and connects to the local keeper service binding. Local player signing is disabled there.
 
-For a later authorized public testnet deployment, set `KEEPER_PRIVATE_KEY`, `GAS_FAUCET_PRIVATE_KEY` and `BOT_PRIVATE_KEYS` as secrets on `workers/wrangler.jsonc`. Generate one random `FAUCET_API_TOKEN` and set the same secret on both the keeper worker and the root web worker. Verify the public addresses and budgets in the worker config, deploy the keeper, then deploy the built root `wrangler.jsonc`. Keep `EVENT_OPERATIONS` bound to `market-royale-keeper`. Cron wakes the durable operator every minute; alarms normally run every 15 seconds. Never upload `.testnet`, `.env.local`, or `.dev.vars` as assets.
+For a public testnet deployment, set `KEEPER_PRIVATE_KEY`, `GAS_FAUCET_PRIVATE_KEY` and `BOT_PRIVATE_KEYS` as secrets on `workers/wrangler.jsonc`. Generate one random `FAUCET_API_TOKEN` and set the same secret on both the keeper worker and the root web worker. Verify the public addresses and budgets in the worker config, deploy the keeper, then deploy the built root `wrangler.jsonc`. Keep `EVENT_OPERATIONS` bound to `market-royale-keeper`. Cron wakes the durable operator every minute; alarms normally run every 15 seconds. Never upload `.testnet`, `.env.local`, or `.dev.vars` as assets.
 
-`127.0.0.1` invitations only work on this computer. Use the eventual public Cloudflare URL before inviting outside players. This is a testnet product under verification, not an audited mainnet release.
+`127.0.0.1` invitations only work on this computer. Use the public Cloudflare URL before inviting outside players. This is a testnet product under verification, not an audited mainnet release.

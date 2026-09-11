@@ -1,0 +1,306 @@
+{
+  "version": 5,
+  "chainId": 50312,
+  "registry": "0x4a17dc5e798e68060e6e8cadbf795531557880cd",
+  "status": "complete",
+  "transactions": [
+    {
+      "hash": "0x9c5b943425a0d80c52a16f048ecd4582016b7bbd6a500deac0752087e510c845",
+      "label": "Approve host seat",
+      "status": "success",
+      "block": "485678737"
+    },
+    {
+      "hash": "0xcc848c2167c222a7f4c137705131a90cddcf49227e181e98bb20d5a7f6b896fa",
+      "label": "Create and join V5 quick match",
+      "status": "reverted",
+      "block": "485678789"
+    },
+    {
+      "hash": "0x3b25922d4300629bd16979501c20ce3515f1d0b3d73463e6b71098ed04b42c35",
+      "label": "Create and join V5 quick match",
+      "status": "success",
+      "block": "485680162"
+    },
+    {
+      "hash": "0xb46a318921f1f76770ba770e74ffe6a911226e26bbd796d6ce1a67c9c8e7e1fe",
+      "label": "Approve challenger seat",
+      "status": "success",
+      "block": "485680231"
+    },
+    {
+      "hash": "0xf9518a5d1b3ed45bd1d7da5b33bc604954197736f8cb35d2f3a32d222ec0e2b2",
+      "label": "Enter challenger",
+      "status": "success",
+      "block": "485680284"
+    },
+    {
+      "hash": "0x4981f422a62d6ac8dff386cb30fc1a20b8921875103343474e552c0ec21750ee",
+      "label": "Host buys UP",
+      "status": "success",
+      "block": "485681735"
+    },
+    {
+      "hash": "0x367f23301626191415866c98a96743a07296e573f861c2c07c40dab46cd85970",
+      "label": "Challenger buys DOWN",
+      "status": "success",
+      "block": "485681788"
+    }
+  ],
+  "completedSteps": [
+    "Approve host seat",
+    "Create and join V5 quick match",
+    "Approve challenger seat",
+    "Enter challenger",
+    "Host buys UP",
+    "Challenger buys DOWN"
+  ],
+  "match": 7,
+  "market": {
+    "id": "0x000000000000000000000000000000000000000000000000000000000001a462",
+    "asset": "BTC",
+    "interval": 3600,
+    "start": 1789138800,
+    "expiry": 1789142400
+  },
+  "joinDeadline": "1789141388",
+  "players": [
+    {
+      "wallet": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+      "vault": "0x20f20557bB62C345deE0e349488f982fd6ad1Da1",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 2,
+      "prizeClaimed": true,
+      "prize": "0"
+    },
+    {
+      "wallet": "0x083995C36A49726E8C232D4763638239d154f33B",
+      "vault": "0x165273918cF2c1BA5109FF5F9BF5a6434F1ad857",
+      "active": false,
+      "eliminatedRound": 1,
+      "rank": 1,
+      "prizeClaimed": true,
+      "prize": "4000000"
+    }
+  ],
+  "operator": {
+    "lastRun": 1789142744430,
+    "lastSuccess": 1789142507167,
+    "error": "",
+    "pending": null,
+    "cursor": 7,
+    "day": "2026-09-11",
+    "spent": "21192846000000000",
+    "log": [
+      {
+        "time": 1789142507166,
+        "label": "Record progression · royale 7 · 0x083995",
+        "hash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+        "status": "success"
+      },
+      {
+        "time": 1789142477190,
+        "label": "Pay entrants · royale 7",
+        "hash": "0x0bc082fa6b164cacfcb8b353117e0d7318647e8b21b3181777435fd67b5f043d",
+        "status": "success"
+      },
+      {
+        "time": 1789142446926,
+        "label": "Settle oracle result · royale 7",
+        "hash": "0x488c2d746a65a5bce8fea01ca343088a87a8a05ee3213569f9b6fd4ad31f6bb1",
+        "status": "success"
+      }
+    ],
+    "issues": {},
+    "botCursor": 0,
+    "fastUntil": 1789142864061,
+    "registry": "0x4a17dc5e798e68060e6e8cadbf795531557880cd",
+    "progression": "0xaecf844569aba92494947bc4edf8e268c31b5c54",
+    "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+    "sponsor": "0x24a43ad7e9318cf515867477bf9c489989dcc701",
+    "enabled": true,
+    "faucetEnabled": true,
+    "faucet": "0x751586985D47f49D0745991758ac2426E2f2d0a7",
+    "gasGrant": "1",
+    "botBackfill": true,
+    "bots": [
+      "0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0",
+      "0x6C3162695B106F9F200057113bE7C60469C4A399",
+      "0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd",
+      "0xF5339652Db213CC08091d8C6e973640cae8e526b"
+    ],
+    "keeper": "0x7398556C34044B866102b32655F13B9a5b394Da0",
+    "managed": [
+      7
+    ],
+    "assetPreferences": {
+      "7": "BTC"
+    }
+  },
+  "finishedAt": "2026-09-11T16:05:46.799Z",
+  "arenaEvents": [
+    {
+      "event": "TermsSet",
+      "transactionHash": "0x3b25922d4300629bd16979501c20ce3515f1d0b3d73463e6b71098ed04b42c35",
+      "block": "485680162",
+      "args": {
+        "id": "7",
+        "entryFee": "2000000",
+        "bankroll": "10000000"
+      }
+    },
+    {
+      "event": "Created",
+      "transactionHash": "0x3b25922d4300629bd16979501c20ce3515f1d0b3d73463e6b71098ed04b42c35",
+      "block": "485680162",
+      "args": {
+        "id": "7",
+        "host": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+        "marketId": "0x000000000000000000000000000000000000000000000000000000000001a462",
+        "joinDeadline": "1789141388"
+      }
+    },
+    {
+      "event": "Joined",
+      "transactionHash": "0x3b25922d4300629bd16979501c20ce3515f1d0b3d73463e6b71098ed04b42c35",
+      "block": "485680162",
+      "args": {
+        "id": "7",
+        "player": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+        "vault": "0x20f20557bB62C345deE0e349488f982fd6ad1Da1"
+      }
+    },
+    {
+      "event": "Joined",
+      "transactionHash": "0xf9518a5d1b3ed45bd1d7da5b33bc604954197736f8cb35d2f3a32d222ec0e2b2",
+      "block": "485680284",
+      "args": {
+        "id": "7",
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "vault": "0x165273918cF2c1BA5109FF5F9BF5a6434F1ad857"
+      }
+    },
+    {
+      "event": "RoundStarted",
+      "transactionHash": "0x8a8d3cf086e50f3a044a05c286a7cbeb7bf5f31b8dba5bdd47e7d3cdbd426a0d",
+      "block": "485681548",
+      "args": {
+        "id": "7",
+        "marketId": "0x000000000000000000000000000000000000000000000000000000000001a462",
+        "round": 1
+      }
+    },
+    {
+      "event": "RoundEnded",
+      "transactionHash": "0x488c2d746a65a5bce8fea01ca343088a87a8a05ee3213569f9b6fd4ad31f6bb1",
+      "block": "485691676",
+      "args": {
+        "id": "7",
+        "round": 1,
+        "survivors": 0
+      }
+    },
+    {
+      "event": "Finished",
+      "transactionHash": "0x488c2d746a65a5bce8fea01ca343088a87a8a05ee3213569f9b6fd4ad31f6bb1",
+      "block": "485691676",
+      "args": {
+        "id": "7",
+        "winner": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "prizePool": "4000000"
+      }
+    },
+    {
+      "event": "PrizeClaimed",
+      "transactionHash": "0x0bc082fa6b164cacfcb8b353117e0d7318647e8b21b3181777435fd67b5f043d",
+      "block": "485691943",
+      "args": {
+        "id": "7",
+        "player": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+        "amount": "0"
+      }
+    },
+    {
+      "event": "PrizeClaimed",
+      "transactionHash": "0x0bc082fa6b164cacfcb8b353117e0d7318647e8b21b3181777435fd67b5f043d",
+      "block": "485691943",
+      "args": {
+        "id": "7",
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "amount": "4000000"
+      }
+    }
+  ],
+  "progressionEvents": [
+    {
+      "event": "ResultRecorded",
+      "transactionHash": "0x32f9eebd21501248c42f1043739ffd3cc00f59fe71f297b5ec23c9ac7fc889b6",
+      "block": "485692122",
+      "args": {
+        "royale": "7",
+        "player": "0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259",
+        "rank": 2,
+        "ratingDelta": -30,
+        "xp": 100,
+        "league": 0
+      }
+    },
+    {
+      "event": "BadgeMinted",
+      "transactionHash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+      "block": "485692258",
+      "args": {
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "badge": "1",
+        "name": "Royale Debut"
+      }
+    },
+    {
+      "event": "BadgeMinted",
+      "transactionHash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+      "block": "485692258",
+      "args": {
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "badge": "2",
+        "name": "Cut Survivor"
+      }
+    },
+    {
+      "event": "BadgeMinted",
+      "transactionHash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+      "block": "485692258",
+      "args": {
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "badge": "5",
+        "name": "Royale Champion"
+      }
+    },
+    {
+      "event": "BadgeMinted",
+      "transactionHash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+      "block": "485692258",
+      "args": {
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "badge": "7",
+        "name": "Profitable Finish"
+      }
+    },
+    {
+      "event": "ResultRecorded",
+      "transactionHash": "0xac70c72241f8196b83da3a3257b961ad8c59e037d194d4c576594bcfe1f6aed7",
+      "block": "485692258",
+      "args": {
+        "royale": "7",
+        "player": "0x083995C36A49726E8C232D4763638239d154f33B",
+        "rank": 1,
+        "ratingDelta": 30,
+        "xp": 450,
+        "league": 0
+      }
+    }
+  ],
+  "observations": [
+    "The first creation attempt expired during Shannon transaction inclusion and reverted atomically before a royale was created or funds moved. The runner now uses a two-minute lobby; the retry created royale 7 and completed."
+  ]
+}

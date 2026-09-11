@@ -17,7 +17,7 @@ The sponsor was deployed with the V2 arena source in its compiler input. Its his
 
 ## Active-arena player vaults
 
-The V5 arena currently has 6 royales and 18 unique TraderVault deployments. Every vault is fully verified.
+The V5 arena currently has 7 royales and 20 unique TraderVault deployments. Every vault is fully verified.
 
 | Royale | Player | TraderVault |
 | ---: | --- | --- |
@@ -39,6 +39,8 @@ The V5 arena currently has 6 royales and 18 unique TraderVault deployments. Ever
 | 6 | [`0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0`](https://shannon-explorer.somnia.network/address/0x8FA9A665Df9933CE11Be8f1769b66180a55d41a0) | [`0x7d863dF4E7e87A98CB39B02A8122a18996E13351`](https://shannon-explorer.somnia.network/address/0x7d863dF4E7e87A98CB39B02A8122a18996E13351) |
 | 6 | [`0x6C3162695B106F9F200057113bE7C60469C4A399`](https://shannon-explorer.somnia.network/address/0x6C3162695B106F9F200057113bE7C60469C4A399) | [`0x767fe91cF030EC7c3c77c3eb4877a54DBa7F6D16`](https://shannon-explorer.somnia.network/address/0x767fe91cF030EC7c3c77c3eb4877a54DBa7F6D16) |
 | 6 | [`0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd`](https://shannon-explorer.somnia.network/address/0x32840FF1c9fCDF3862D420B9FB5927Ce24e92Cbd) | [`0x6081fdC2584A724311A6511e1d6d7AaaDcb4d83c`](https://shannon-explorer.somnia.network/address/0x6081fdC2584A724311A6511e1d6d7AaaDcb4d83c) |
+| 7 | [`0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259`](https://shannon-explorer.somnia.network/address/0x8143FFD10c8fb63ce18E5672077f0Df1b9a33259) | [`0x20f20557bB62C345deE0e349488f982fd6ad1Da1`](https://shannon-explorer.somnia.network/address/0x20f20557bB62C345deE0e349488f982fd6ad1Da1) |
+| 7 | [`0x083995C36A49726E8C232D4763638239d154f33B`](https://shannon-explorer.somnia.network/address/0x083995C36A49726E8C232D4763638239d154f33B) | [`0x165273918cF2c1BA5109FF5F9BF5a6434F1ad857`](https://shannon-explorer.somnia.network/address/0x165273918cF2c1BA5109FF5F9BF5a6434F1ad857) |
 
 ## External DreamDEX dependencies
 

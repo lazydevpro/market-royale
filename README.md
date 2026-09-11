@@ -73,9 +73,9 @@ The Cloudflare operator discovers eligible events, checks two-sided depth, backf
 | DreamDEX binary module    | [`0x3ecC…388`](https://shannon-explorer.somnia.network/address/0x3ecC694Cef705358864a646142ac17A90E29e388) |
 | tUSDC collateral          | [`0x70a8…d8E`](https://shannon-explorer.somnia.network/address/0x70a86D8842FB63C4Ad2b7cdddF530eBf1BB25d8E) |
 
-Deployment receipts and transaction hashes are committed in [`deployments/shannon-v5.json`](deployments/shannon-v5.json), [`deployments/shannon-progression-v4.json`](deployments/shannon-progression-v4.json), and [`deployments/shannon-training-bots.json`](deployments/shannon-training-bots.json). Older journals remain as regression and recovery evidence.
+Deployment receipts and transaction hashes are committed in [`deployments/shannon-v5.json`](deployments/shannon-v5.json), [`deployments/shannon-progression-v4.json`](deployments/shannon-progression-v4.json), and [`deployments/shannon-training-bots.json`](deployments/shannon-training-bots.json). A completed current-version two-player lifecycle, including real fills, oracle settlement, payouts, progression, and badge events, is recorded in [`deployments/v5-quick-match-e2e.json`](deployments/v5-quick-match-e2e.json). Older journals remain as regression and recovery evidence.
 
-The arena, progression sidecar, liquidity sponsor, vault factory, and all 18 TraderVault instances created by the active arena are fully source verified. Compiler settings, constructor matching, and direct links are recorded in [`deployments/EXPLORER-VERIFICATION.md`](deployments/EXPLORER-VERIFICATION.md).
+The arena, progression sidecar, liquidity sponsor, vault factory, and all 20 TraderVault instances created by the active arena are fully source verified. Compiler settings, constructor matching, and direct links are recorded in [`deployments/EXPLORER-VERIFICATION.md`](deployments/EXPLORER-VERIFICATION.md).
 
 ## Run locally
 
