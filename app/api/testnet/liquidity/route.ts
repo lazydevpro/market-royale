@@ -1,9 +1,9 @@
 import { isHex, zeroAddress, type Hex } from "viem";
 import {
   address,
-  client,
   head,
   readMarket,
+  scopedClient,
 } from "../../../../lib/testnet/server";
 import { liquidityAbi, outcomeAbi } from "../../../../lib/testnet/config";
 export const dynamic = "force-dynamic";
@@ -15,9 +15,10 @@ export async function GET(request: Request) {
       throw new Error("Invalid market ID.");
     const account = address(q.get("account"));
     if (!account) throw new Error("Wallet required.");
-    const block = await head(),
+    const client = scopedClient();
+    const block = await head(client),
       blockNumber = block.number,
-      m = await readMarket(id as Hex, undefined, blockNumber);
+      m = await readMarket(id as Hex, undefined, blockNumber, client);
     const balances = await Promise.all(
       [m.yesId, m.noId].map((id) =>
         client.readContract({

@@ -1,5 +1,5 @@
 import { isAddress, type Abi, type Address } from "viem";
-import { client, head } from "../../../../lib/testnet/server";
+import { head, scopedClient } from "../../../../lib/testnet/server";
 import { PROGRESSION } from "../../../../lib/testnet/config";
 import artifact from "../../../../lib/testnet/MarketRoyaleProgression.json";
 
@@ -35,7 +35,8 @@ const serial = <T>(value: unknown): T =>
 
 export async function GET(request: Request) {
   try {
-    await head();
+    const client = scopedClient();
+    await head(client);
     if (!PROGRESSION || !isAddress(PROGRESSION))
       return Response.json(
         { configured: false },
@@ -50,10 +51,26 @@ export async function GET(request: Request) {
       throw new Error("Invalid match number");
 
     const [version, season, seasonEnds, reserve] = await Promise.all([
-      client.readContract({ address: PROGRESSION, abi, functionName: "VERSION" }),
-      client.readContract({ address: PROGRESSION, abi, functionName: "currentSeason" }),
-      client.readContract({ address: PROGRESSION, abi, functionName: "seasonEnds" }),
-      client.readContract({ address: PROGRESSION, abi, functionName: "sponsorReserve" }),
+      client.readContract({
+        address: PROGRESSION,
+        abi,
+        functionName: "VERSION",
+      }),
+      client.readContract({
+        address: PROGRESSION,
+        abi,
+        functionName: "currentSeason",
+      }),
+      client.readContract({
+        address: PROGRESSION,
+        abi,
+        functionName: "seasonEnds",
+      }),
+      client.readContract({
+        address: PROGRESSION,
+        abi,
+        functionName: "sponsorReserve",
+      }),
     ]);
     if (!account)
       return Response.json(
@@ -155,7 +172,9 @@ export async function GET(request: Request) {
       error instanceof Error ? error.message : error,
     );
     return Response.json(
-      { error: "Unable to verify player progression on Shannon. Retry shortly." },
+      {
+        error: "Unable to verify player progression on Shannon. Retry shortly.",
+      },
       { status: 503, headers: { "Cache-Control": "no-store" } },
     );
   }

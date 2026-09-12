@@ -35,6 +35,7 @@ import {
   moduleAbi,
   type Tournament,
   type Player,
+  type LiveMarket,
   CANCEL_TIMEOUT,
   START_GRACE,
 } from "../lib/testnet/config";
@@ -56,6 +57,15 @@ type FaucetResult = {
     funder?: Address;
     nextEligibleAt?: number;
   };
+};
+type MarketFeed = {
+  chainId: number;
+  block: string;
+  timestamp: number;
+  markets: LiveMarket[];
+  cachedAt: number;
+  stale: boolean;
+  warning?: string;
 };
 type State = {
   lastRun: number;
@@ -114,6 +124,9 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
       ctx.storage.sql.exec(
         "CREATE TABLE IF NOT EXISTS gas_claims (address TEXT PRIMARY KEY, claimed_at INTEGER NOT NULL, hash TEXT, raw TEXT, confirmed INTEGER NOT NULL DEFAULT 0)",
       );
+      ctx.storage.sql.exec(
+        "CREATE TABLE IF NOT EXISTS response_cache (key TEXT PRIMARY KEY, data TEXT NOT NULL, updated_at INTEGER NOT NULL)",
+      );
       const claimColumns = ctx.storage.sql
         .exec<{ name: string }>("PRAGMA table_info(gas_claims)")
         .toArray()
@@ -143,6 +156,40 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
       "UPDATE state SET data=? WHERE id=1",
       JSON.stringify(s),
     );
+  }
+  async marketFeed(): Promise<MarketFeed> {
+    const cached = this.ctx.storage.sql
+      .exec<{ data: string; updated_at: number }>(
+        "SELECT data,updated_at FROM response_cache WHERE key='markets'",
+      )
+      .toArray()[0];
+    const now = Date.now();
+    if (cached && now - cached.updated_at < 30_000)
+      return {
+        ...JSON.parse(cached.data),
+        cachedAt: cached.updated_at,
+        stale: false,
+      };
+    try {
+      const value = serial<Omit<MarketFeed, "cachedAt" | "stale" | "warning">>(
+        await markets(),
+      );
+      this.ctx.storage.sql.exec(
+        "INSERT INTO response_cache(key,data,updated_at) VALUES('markets',?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,updated_at=excluded.updated_at",
+        JSON.stringify(value),
+        now,
+      );
+      return { ...value, cachedAt: now, stale: false };
+    } catch (error) {
+      if (!cached) throw error;
+      return {
+        ...JSON.parse(cached.data),
+        cachedAt: cached.updated_at,
+        stale: true,
+        warning:
+          "Live market refresh is delayed; showing the last verified feed.",
+      };
+    }
   }
   async status() {
     const s = this.state();
@@ -416,9 +463,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
     }
   }
   async wake(matchId?: number, asset?: string) {
-    const preferredAsset = ["BTC", "ETH"].includes(asset ?? "")
-      ? asset
-      : null;
+    const preferredAsset = ["BTC", "ETH"].includes(asset ?? "") ? asset : null;
     if (Number.isSafeInteger(matchId) && Number(matchId) > 0) {
       this.ctx.storage.sql.exec(
         "INSERT INTO managed (id,asset) VALUES (?,?) ON CONFLICT(id) DO UPDATE SET asset=COALESCE(excluded.asset,managed.asset)",
@@ -496,7 +541,10 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
     await head();
     const registry = this.env.ROYALE_ADDRESS as Address;
     const version = await verifyRegistry(registry);
-    if ((await client.getChainId()) !== 50312 || ![2, 3, 4, 5].includes(version))
+    if (
+      (await client.getChainId()) !== 50312 ||
+      ![2, 3, 4, 5].includes(version)
+    )
       throw new Error("Keeper requires a verified Shannon arena.");
     const account = privateKeyToAccount(this.env.KEEPER_PRIVATE_KEY as Hex);
     const progression = this.env.PROGRESSION_ADDRESS as Address;
@@ -635,7 +683,9 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
         signerGas = await client.getBalance({ address: signer.address });
       }
       if (signerGas < gas * gasPrice)
-        throw new Error("The automatic STT grant is too small for this action.");
+        throw new Error(
+          "The automatic STT grant is too small for this action.",
+        );
       const nonce = await client.getTransactionCount({
         address: signer.address,
         blockTag: "pending",
@@ -768,7 +818,8 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
         return false;
       if (m.recycled || m.status !== 1 || m.bookError || BigInt(m.tick) === 0n)
         return false;
-      const depthPerPlayer = bankroll / 5n > 1_000_000n ? bankroll / 5n : 1_000_000n;
+      const depthPerPlayer =
+        bankroll / 5n > 1_000_000n ? bankroll / 5n : 1_000_000n;
       const requiredDepth = BigInt(players) * depthPerPlayer;
       const amount = requiredDepth > 20_000_000n ? requiredDepth : 20_000_000n;
       const balance = await client.readContract({
@@ -879,7 +930,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
       .exec<{ id: number }>("SELECT id FROM managed ORDER BY id")
       .toArray()
       .map((r) => r.id);
-    let live: Awaited<ReturnType<typeof markets>> | undefined;
+    let live: MarketFeed | undefined;
     const upcoming = await Promise.all(
       ids.map(async (id) => {
         const raw = serial<Tournament>(
@@ -918,7 +969,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
         priority(a.t) - priority(b.t) || a.t.joinDeadline - b.t.joinDeadline,
     );
     s.issues ??= {};
-      for (const { id, t } of upcoming) {
+    for (const { id, t } of upcoming) {
       if ((s.issues[id]?.retryAt ?? 0) > Date.now()) continue;
       try {
         const ps = serial<Player[]>(
@@ -1063,33 +1114,34 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
               ),
           );
           for (const player of candidates) {
-            const [actions, settled, yesShares, noShares, cash] = await Promise.all([
-              client.readContract({
-                address: player.vault,
-                abi: vaultArtifact.abi as Abi,
-                functionName: "actions",
-              }),
-              client.readContract({
-                address: player.vault,
-                abi: vaultArtifact.abi as Abi,
-                functionName: "settled",
-              }),
-              client.readContract({
-                address: player.vault,
-                abi: vaultArtifact.abi as Abi,
-                functionName: "yesShares",
-              }),
-              client.readContract({
-                address: player.vault,
-                abi: vaultArtifact.abi as Abi,
-                functionName: "noShares",
-              }),
-              client.readContract({
-                address: player.vault,
-                abi: vaultArtifact.abi as Abi,
-                functionName: "cash",
-              }),
-            ]);
+            const [actions, settled, yesShares, noShares, cash] =
+              await Promise.all([
+                client.readContract({
+                  address: player.vault,
+                  abi: vaultArtifact.abi as Abi,
+                  functionName: "actions",
+                }),
+                client.readContract({
+                  address: player.vault,
+                  abi: vaultArtifact.abi as Abi,
+                  functionName: "settled",
+                }),
+                client.readContract({
+                  address: player.vault,
+                  abi: vaultArtifact.abi as Abi,
+                  functionName: "yesShares",
+                }),
+                client.readContract({
+                  address: player.vault,
+                  abi: vaultArtifact.abi as Abi,
+                  functionName: "noShares",
+                }),
+                client.readContract({
+                  address: player.vault,
+                  abi: vaultArtifact.abi as Abi,
+                  functionName: "cash",
+                }),
+              ]);
             const actionCount = Number(actions);
             const stepSeconds = Math.max(
               30,
@@ -1130,8 +1182,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
               if (quantity < minimum) quantity = minimum;
               quantity = ((quantity + lot - 1n) / lot) * lot;
               const affordable = ((cash as bigint) * 1_000_000n) / price;
-              if (quantity > affordable)
-                quantity = (affordable / lot) * lot;
+              if (quantity > affordable) quantity = (affordable / lot) * lot;
               if (quantity < minimum) continue;
             } else {
               const upHolding = yesShares as bigint;
@@ -1158,9 +1209,10 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
         if (t.phase === 0) {
           if (now < t.joinDeadline) {
             if (ps.length >= t.minPlayers && now >= t.joinDeadline - 90) {
-              live ??= await markets();
-                  const candidate = t.scheduled
-                ? live.markets.find(
+              const feed = live ?? (await this.marketFeed());
+              live = feed;
+              const candidate = t.scheduled
+                ? feed.markets.find(
                     (m) =>
                       m.interval === t.duration &&
                       (!preferredAsset || m.asset === preferredAsset) &&
@@ -1289,8 +1341,9 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
           (t.phase === 0 && t.scheduled && now >= t.joinDeadline) ||
           t.phase === 2
         ) {
-          live ??= await markets();
-          for (const m of live.markets) {
+          const feed = live ?? (await this.marketFeed());
+          live = feed;
+          for (const m of feed.markets) {
             if (
               m.interval !== t.duration ||
               (preferredAsset && m.asset !== preferredAsset) ||
@@ -1300,9 +1353,7 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
               (t.phase === 2 && m.start < t.expiry)
             )
               continue;
-            if (
-              await ensureLiquidity(m, t.activeCount, BigInt(t.bankroll))
-            )
+            if (await ensureLiquidity(m, t.activeCount, BigInt(t.bankroll)))
               return;
             if (
               !(await client.readContract({
@@ -1333,13 +1384,9 @@ export class EventKeeper extends DurableObject<KeeperEnv> {
             : error instanceof Error
               ? error.message
               : "Event action failed";
-        const enrollmentUrgent =
-          t.phase === 0 && clock < t.joinDeadline;
+        const enrollmentUrgent = t.phase === 0 && clock < t.joinDeadline;
         if (enrollmentUrgent)
-          s.fastUntil = Math.max(
-            s.fastUntil ?? 0,
-            Date.now() + 2 * 60 * 1000,
-          );
+          s.fastUntil = Math.max(s.fastUntil ?? 0, Date.now() + 2 * 60 * 1000);
         s.issues[id] = {
           error: message,
           retryAt: Date.now() + (enrollmentUrgent ? 3000 : 30000),
@@ -1407,6 +1454,10 @@ export default {
     const path = new URL(request.url).pathname;
     if (request.method === "GET" && path === "/status")
       return Response.json(await stub.status(), {
+        headers: { "Cache-Control": "no-store" },
+      });
+    if (request.method === "GET" && path === "/markets")
+      return Response.json(await stub.marketFeed(), {
         headers: { "Cache-Control": "no-store" },
       });
     if (request.method === "POST" && path === "/wake") {

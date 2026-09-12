@@ -23,7 +23,6 @@ import {
   VENUE,
   RPC,
   CHAIN_ID,
-  createdEvent,
   moduleAbi,
   marketAbi,
   poolAbi,
@@ -45,6 +44,13 @@ export const client = createPublicClient({
   transport: shannonTransport(),
   batch: { multicall: false },
 });
+export const scopedClient = () =>
+  createPublicClient({
+    chain: somniaTestnet,
+    transport: shannonTransport(true),
+    batch: { multicall: false },
+  });
+type ShannonClient = ReturnType<typeof scopedClient>;
 const dreamdexData = new SomniaMarkets({
   indexerUrl: "https://dev.smk.somnia.host/v1/graphql",
   chain: somniaShannon,
@@ -99,52 +105,42 @@ const tradeActivityCache = new Map<string, TradeActivityCache>();
 
 async function discover(head: bigint) {
   if (marketCache && Date.now() - marketCache.at < 20_000) return;
-
-  await (async () => {
-    const events = marketCache?.events ?? new Map();
-    const lower = marketCache ? marketCache.head - 10n : head - 39_999n;
-    const ranges = [];
-    for (let to = head; to >= lower; to -= 1000n)
-      ranges.push({
-        fromBlock: to - 999n < lower ? lower : to - 999n,
-        toBlock: to,
-      });
-    for (let i = 0; i < ranges.length; i += 4) {
-      const sets = await Promise.all(
-        ranges.slice(i, i + 4).map((r) =>
-          client.getLogs({
-            ...r,
-            address: CREATOR,
-            event: createdEvent,
-            strict: true,
-          }),
-        ),
-      );
-      for (const logs of sets)
-        for (const log of logs) {
-          const m = log.args;
-          if (m.collateral.toLowerCase() === COLLATERAL.toLowerCase())
-            events.set(m.marketId, {
-              id: m.marketId,
-              asset: m.asset,
-              question: m.question,
-              expiry: Number(m.expiry),
-            });
-        }
-    }
-    // Limit memory without inventing a fallback market.
-    if (events.size > 200) {
-      const oldest = [...events.values()].sort((a, b) => a.expiry - b.expiry);
-      for (const e of oldest.slice(0, events.size - 200)) events.delete(e.id);
-    }
-    marketCache = { events, head, at: Date.now() };
-  })();
+  const now = Math.floor(Date.now() / 1000);
+  const indexed = await dreamdexData.client.listLiveBinaryMarkets({
+    creator: CREATOR,
+    venueId: VENUE,
+    limit: 24,
+    nowSec: now,
+  });
+  const events = new Map<
+    string,
+    { id: Hex; asset: string; question: string; expiry: number }
+  >();
+  for (const market of indexed) {
+    const start = Number(market.tradingStart),
+      expiry = Number(market.expiry);
+    if (
+      market.collateral.toLowerCase() !== COLLATERAL.toLowerCase() ||
+      market.creator?.toLowerCase() !== CREATOR.toLowerCase() ||
+      market.venueId?.toLowerCase() !== VENUE.toLowerCase() ||
+      start > now ||
+      expiry <= now
+    )
+      continue;
+    events.set(market.marketId, {
+      id: market.marketId,
+      asset: market.asset,
+      question: market.question,
+      expiry,
+    });
+  }
+  marketCache = { events, head, at: Date.now() };
 }
-export async function head() {
-  const chain = await client.getChainId();
+export async function head(rpcClient: ShannonClient = client) {
+  const chain = await rpcClient.getChainId();
   if (chain !== CHAIN_ID)
     throw new Error("RPC is not Somnia Shannon. Writes are disabled.");
-  const block = await client.getBlock();
+  const block = await rpcClient.getBlock();
   if (block.number === null) throw new Error("Latest block is unavailable.");
   if (Math.abs(Date.now() / 1000 - Number(block.timestamp)) > 90)
     throw new Error(
@@ -156,8 +152,9 @@ export async function readMarket(
   id: Hex,
   metadata?: { asset: string; question: string },
   blockNumber?: bigint,
+  rpcClient: ShannonClient = client,
 ): Promise<LiveMarket> {
-  const m = await client.readContract({
+  const m = await rpcClient.readContract({
     address: MODULE,
     abi: moduleAbi,
     functionName: "markets",
@@ -172,37 +169,37 @@ export async function readMarket(
     throw new Error("Market is outside the supported testnet venue.");
   const [status, outcomeToken, resolved, voided, payouts, poolExpiry] =
     await Promise.all([
-      client.readContract({
+      rpcClient.readContract({
         address: m[8],
         abi: marketAbi,
         functionName: "status",
         blockNumber,
       }),
-      client.readContract({
+      rpcClient.readContract({
         address: m[8],
         abi: marketAbi,
         functionName: "outcomeToken",
         blockNumber,
       }),
-      client.readContract({
+      rpcClient.readContract({
         address: m[8],
         abi: marketAbi,
         functionName: "isResolved",
         blockNumber,
       }),
-      client.readContract({
+      rpcClient.readContract({
         address: m[8],
         abi: marketAbi,
         functionName: "isVoided",
         blockNumber,
       }),
-      client.readContract({
+      rpcClient.readContract({
         address: m[8],
         abi: marketAbi,
         functionName: "payoutNumerators",
         blockNumber,
       }),
-      client.readContract({
+      rpcClient.readContract({
         address: m[9],
         abi: poolAbi,
         functionName: "marketExpiryNs",
@@ -220,21 +217,21 @@ export async function readMarket(
   if (!recycled && status === 1) {
     try {
       const [b, a, p] = await Promise.all([
-        client.readContract({
+        rpcClient.readContract({
           address: m[9],
           abi: poolAbi,
           functionName: "getBookLevels",
           args: [true, 10n],
           blockNumber,
         }),
-        client.readContract({
+        rpcClient.readContract({
           address: m[9],
           abi: poolAbi,
           functionName: "getBookLevels",
           args: [false, 10n],
           blockNumber,
         }),
-        client.readContract({
+        rpcClient.readContract({
           address: m[9],
           abi: poolAbi,
           functionName: "getOrderBookParameters",
@@ -280,7 +277,8 @@ export async function readMarket(
   };
 }
 export async function markets() {
-  const block = await head();
+  const rpcClient = scopedClient();
+  const block = await head(rpcClient);
   await discover(block.number);
   const live: LiveMarket[] = [];
   const entries = [...marketCache!.events.values()].filter(
@@ -290,7 +288,7 @@ export async function markets() {
   for (let i = 0; i < entries.length; i += 6) {
     const batch = await Promise.all(
       entries.slice(i, i + 6).map(async (e) => {
-        const rec = await client.readContract({
+        const rec = await rpcClient.readContract({
           address: MODULE,
           abi: moduleAbi,
           functionName: "markets",
@@ -298,7 +296,7 @@ export async function markets() {
           blockNumber: block.number,
         });
         if (rec[13] <= block.timestamp) return null;
-        return readMarket(e.id, e, block.number);
+        return readMarket(e.id, e, block.number, rpcClient);
       }),
     );
     live.push(...batch.filter((m): m is LiveMarket => m !== null));
@@ -369,12 +367,13 @@ export async function marketChart(
 async function blockNearTimestamp(
   target: number,
   latest: Awaited<ReturnType<typeof client.getBlock>>,
+  rpcClient: ShannonClient,
 ) {
   if (latest.number === null) throw new Error("Latest block is unavailable.");
   const latestNumber = latest.number;
   if (target >= Number(latest.timestamp)) return latestNumber;
   const sampleDistance = latestNumber > 2_000n ? 2_000n : latestNumber;
-  const sample = await client.getBlock({
+  const sample = await rpcClient.getBlock({
     blockNumber: latestNumber - sampleDistance,
   });
   const sampleSeconds = Math.max(
@@ -391,7 +390,7 @@ async function blockNearTimestamp(
   // advances several blocks each second, so a timestamp estimate avoids a
   // chain-wide log scan while remaining valid if its block cadence changes.
   for (let attempt = 0; attempt < 3; attempt++) {
-    const block = await client.getBlock({ blockNumber: guess });
+    const block = await rpcClient.getBlock({ blockNumber: guess });
     const secondsAway = target - Number(block.timestamp);
     if (Math.abs(secondsAway) <= 2) break;
     const correction = BigInt(Math.round(secondsAway * blocksPerSecond));
@@ -402,9 +401,10 @@ async function blockNearTimestamp(
 }
 
 export async function tournamentTradeActivity(registry: Address, id: number) {
+  const rpcClient = scopedClient();
   const [block, version] = await Promise.all([
-    head(),
-    verifyRegistry(registry),
+    head(rpcClient),
+    verifyRegistry(registry, rpcClient),
   ]);
   const selectedAbi = (
     version === 1
@@ -414,14 +414,14 @@ export async function tournamentTradeActivity(registry: Address, id: number) {
         : arenaArtifact.abi
   ) as Abi;
   const [rawTournament, rawPlayers] = await Promise.all([
-    client.readContract({
+    rpcClient.readContract({
       address: registry,
       abi: selectedAbi,
       functionName: "getTournament",
       args: [BigInt(id)],
       blockNumber: block.number,
     }),
-    client.readContract({
+    rpcClient.readContract({
       address: registry,
       abi: selectedAbi,
       functionName: "getPlayers",
@@ -443,6 +443,7 @@ export async function tournamentTradeActivity(registry: Address, id: number) {
     const fromBlock = await blockNearTimestamp(
       Number(tournament.updatedAt),
       block,
+      rpcClient,
     );
     cached = { fromBlock, lastBlock: fromBlock - 1n, events: [] };
     tradeActivityCache.set(cacheKey, cached);
@@ -474,7 +475,7 @@ export async function tournamentTradeActivity(registry: Address, id: number) {
     for (let offset = 0; offset < ranges.length; offset += 6) {
       const pages = await Promise.all(
         ranges.slice(offset, offset + 6).map((range) =>
-          client.getLogs({
+          rpcClient.getLogs({
             ...range,
             address: vaults,
             event: tradeEvent,
@@ -490,7 +491,7 @@ export async function tournamentTradeActivity(registry: Address, id: number) {
       const blocks = await Promise.all(
         uniqueBlocks
           .slice(offset, offset + 8)
-          .map((blockNumber) => client.getBlock({ blockNumber })),
+          .map((blockNumber) => rpcClient.getBlock({ blockNumber })),
       );
       for (const item of blocks)
         timestamps.set(item.number, Number(item.timestamp));
@@ -545,8 +546,9 @@ export async function checkCode(
     immutableReferences: Record<string, { start: number; length: number }[]>;
     deployedBytecode: string;
   },
+  rpcClient: ShannonClient = client,
 ) {
-  const code = await client.getCode({ address });
+  const code = await rpcClient.getCode({ address });
   if (!code) throw new Error("No deployed contract.");
   let normalized = code.slice(2).toLowerCase();
   for (const refs of Object.values(artifact.immutableReferences))
@@ -561,12 +563,19 @@ export async function checkCode(
   if (normalized !== artifact.deployedBytecode.slice(2).toLowerCase())
     throw new Error("Unrecognized contract bytecode.");
 }
-export async function verifyRegistry(registry: Address) {
+export async function verifyRegistry(
+  registry: Address,
+  rpcClient: ShannonClient = client,
+) {
   const known = checked.get(registry.toLowerCase());
   if (known) return known;
   const [version, token, module] = await Promise.all(
     ["VERSION", "collateral", "module"].map((functionName) =>
-      client.readContract({ address: registry, abi: arenaAbi, functionName }),
+      rpcClient.readContract({
+        address: registry,
+        abi: arenaAbi,
+        functionName,
+      }),
     ),
   );
   if (
@@ -581,13 +590,17 @@ export async function verifyRegistry(registry: Address) {
     throw new Error("Unsupported testnet arena.");
   // The current arena runtime uses factory vaults with lifetime action counts.
   // The official V2 address remains readable for historical tournaments.
-  if (version === 1n) await checkCode(registry, legacyArtifact);
-  if (version === 4n) await checkCode(registry, legacyV4Artifact);
-  if (version === 5n) await checkCode(registry, arenaArtifact);
+  if (version === 1n) await checkCode(registry, legacyArtifact, rpcClient);
+  if (version === 4n) await checkCode(registry, legacyV4Artifact, rpcClient);
+  if (version === 5n) await checkCode(registry, arenaArtifact, rpcClient);
   if (version === 2n || version === 3n || version === 4n || version === 5n) {
     const [creator, venue, factory] = await Promise.all(
       ["trustedCreator", "trustedVenue", "vaultFactory"].map((functionName) =>
-        client.readContract({ address: registry, abi: arenaAbi, functionName }),
+        rpcClient.readContract({
+          address: registry,
+          abi: arenaAbi,
+          functionName,
+        }),
       ),
     );
     if (
@@ -596,9 +609,10 @@ export async function verifyRegistry(registry: Address) {
     )
       throw new Error("Unexpected market permissions.");
     if (version === 4n)
-      await checkCode(factory as Address, legacyV4FactoryArtifact);
-    if (version === 5n) await checkCode(factory as Address, factoryArtifact);
-    const parent = await client.readContract({
+      await checkCode(factory as Address, legacyV4FactoryArtifact, rpcClient);
+    if (version === 5n)
+      await checkCode(factory as Address, factoryArtifact, rpcClient);
+    const parent = await rpcClient.readContract({
       address: factory as Address,
       abi: factoryArtifact.abi as Abi,
       functionName: "arena",
@@ -615,20 +629,21 @@ export async function snapshot(
   id: number,
   before: number,
 ): Promise<Snapshot> {
-  const block = await head(),
+  const rpcClient = scopedClient();
+  const block = await head(rpcClient),
     blockNumber = block.number;
   const [balance, gas, allowance] = account
     ? await Promise.all([
-        client.readContract({
+        rpcClient.readContract({
           address: COLLATERAL,
           abi: tokenAbi,
           functionName: "balanceOf",
           args: [account],
           blockNumber,
         }),
-        client.getBalance({ address: account, blockNumber }),
+        rpcClient.getBalance({ address: account, blockNumber }),
         registry
-          ? client.readContract({
+          ? rpcClient.readContract({
               address: COLLATERAL,
               abi: tokenAbi,
               functionName: "allowance",
@@ -638,7 +653,7 @@ export async function snapshot(
           : Promise.resolve(0n),
       ])
     : [0n, 0n, 0n];
-  const version = registry ? await verifyRegistry(registry) : 2;
+  const version = registry ? await verifyRegistry(registry, rpcClient) : 2;
   const arenaAbi = (
     version === 1
       ? legacyArtifact.abi
@@ -667,9 +682,9 @@ export async function snapshot(
       hasOlder: false,
       nextBefore: null,
     };
-  await verifyRegistry(registry);
+  await verifyRegistry(registry, rpcClient);
   const count = Number(
-    await client.readContract({
+    await rpcClient.readContract({
       address: registry,
       abi: arenaAbi,
       functionName: "tournamentCount",
@@ -680,7 +695,7 @@ export async function snapshot(
   const first = Math.max(1, last - 19);
   async function tournament(n: number) {
     const raw = serial<Record<string, unknown>>(
-      await client.readContract({
+      await rpcClient.readContract({
         address: registry!,
         abi: arenaAbi,
         functionName: "getTournament",
@@ -716,7 +731,7 @@ export async function snapshot(
   let market: LiveMarket | null = null;
   if (selected) {
     const raw = serial<Player[]>(
-      await client.readContract({
+      await rpcClient.readContract({
         address: registry,
         abi: arenaAbi,
         functionName: "getPlayers",
@@ -739,7 +754,7 @@ export async function snapshot(
               ] as const;
               const vals = await Promise.all(
                 keys.map((functionName) =>
-                  client.readContract({
+                  rpcClient.readContract({
                     address: p.vault,
                     abi: vaultAbi,
                     functionName,
@@ -759,7 +774,7 @@ export async function snapshot(
     const results = await Promise.all([
       selected.marketId === zeroHash
         ? Promise.resolve(null)
-        : readMarket(selected.marketId, undefined, blockNumber),
+        : readMarket(selected.marketId, undefined, blockNumber, rpcClient),
       readPlayers(),
     ]);
     market = results[0];

@@ -75,6 +75,8 @@ const arenaAbi = arenaArtifact.abi as Abi,
   vaultAbi = vaultArtifact.abi as Abi,
   progressionAbi = progressionArtifact.abi as Abi;
 const PHASES = ["ENROLLING", "TRADING", "NEXT ROUND", "FINISHED", "CANCELLED"];
+const ACTIVE_WALLET_ID = "market-royale-active-wallet-id-v1";
+const ACTIVE_WALLET_NAME = "market-royale-active-wallet-name-v1";
 type Page = "arena" | "game" | "profile" | "wallet" | "history" | "rules";
 const ROUTE_LOADING: Record<
   Exclude<Page, "rules">,
@@ -445,6 +447,8 @@ export default function Home() {
   };
   useEffect(() => {
     const url = new URL(location.href);
+    const rememberedWallet = localStorage.getItem(ACTIVE_WALLET_ID);
+    if (rememberedWallet) setWalletId(rememberedWallet);
     const saved =
       url.searchParams.get("registry") ??
       process.env.NEXT_PUBLIC_ROYALE_ADDRESS ??
@@ -530,8 +534,24 @@ export default function Home() {
     };
   }, []);
   useEffect(() => {
-    if (!walletId && wallets[0]) setWalletId(wallets[0].id);
+    if (!wallets.length || wallets.some((wallet) => wallet.id === walletId))
+      return;
+    const rememberedId = localStorage.getItem(ACTIVE_WALLET_ID);
+    const rememberedName = localStorage.getItem(ACTIVE_WALLET_NAME);
+    const remembered = wallets.find(
+      (wallet) =>
+        wallet.id === rememberedId ||
+        (rememberedName && wallet.name === rememberedName),
+    );
+    setWalletId(remembered?.id ?? wallets[0].id);
   }, [wallets, walletId]);
+  useEffect(() => {
+    if (!ready || !walletId) return;
+    const wallet = wallets.find((candidate) => candidate.id === walletId);
+    if (!wallet) return;
+    localStorage.setItem(ACTIVE_WALLET_ID, wallet.id);
+    localStorage.setItem(ACTIVE_WALLET_NAME, wallet.name);
+  }, [ready, walletId, wallets]);
   useEffect(() => {
     if (!provider) return;
     let alive = true;
@@ -974,6 +994,14 @@ export default function Home() {
       refresh();
     }
   };
+  const connectCurrentWallet = () =>
+    run("Connect wallet", async () => {
+      if (!provider) throw new Error("No wallet provider was detected.");
+      const nextAccount = await connect(provider);
+      setAccount(nextAccount);
+      setChain(CHAIN_ID);
+      setNotice("Wallet connected to Somnia Shannon.");
+    });
   const wait = async (hash: Hex, label: string) => {
     setActivity((a) =>
       [
@@ -3005,6 +3033,61 @@ export default function Home() {
                       <p>{m?.question}</p>
                     </div>
                     <div className="mr-game-heading-actions">
+                      <div className="mr-game-wallet-controls">
+                        {wallets.length > 1 && (
+                          <select
+                            aria-label="Active trading wallet"
+                            disabled={!!pending}
+                            value={walletId}
+                            onChange={(event) => {
+                              setAccount(null);
+                              invalidateSnapshot();
+                              setWalletId(event.target.value);
+                            }}
+                          >
+                            {wallets.map((wallet) => (
+                              <option key={wallet.id} value={wallet.id}>
+                                {wallet.name}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+                        <button
+                          className={`button compact mr-game-wallet-button ${connected ? "connected" : "blue"}`}
+                          disabled={!provider || !!pending}
+                          onClick={
+                            connected
+                              ? () => go("wallet")
+                              : connectCurrentWallet
+                          }
+                          title={
+                            connected
+                              ? `Connected as ${account}`
+                              : account
+                                ? "Switch to Somnia Shannon and reconnect"
+                                : "Connect a wallet to enter and trade"
+                          }
+                        >
+                          {connected ? (
+                            <PlayerAvatar
+                              seed={account}
+                              size="xs"
+                              league={currentLeague}
+                              label=""
+                              active
+                            />
+                          ) : (
+                            <Wallet size={16} aria-hidden="true" />
+                          )}
+                          <span>
+                            {connected
+                              ? short(account!)
+                              : account
+                                ? "RECONNECT"
+                                : "CONNECT WALLET"}
+                          </span>
+                        </button>
+                      </div>
                       {t.phase === 1 && (
                         <span className="mr-game-clock">
                           <Clock3 size={16} />
@@ -4789,14 +4872,7 @@ export default function Home() {
                   <button
                     className="button blue full"
                     disabled={!provider || !!pending}
-                    onClick={() =>
-                      run("Connect wallet", async () => {
-                        const a = await connect(provider!);
-                        setAccount(a);
-                        setChain(CHAIN_ID);
-                        setNotice("Wallet connected to Somnia Shannon.");
-                      })
-                    }
+                    onClick={connectCurrentWallet}
                   >
                     <Wallet size={18} />
                     {connected ? "RECONNECT WALLET" : "CONNECT TO SHANNON"}
