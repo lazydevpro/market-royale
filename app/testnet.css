@@ -5636,6 +5636,21 @@ h3,
   stroke-dasharray: 5 5;
 }
 
+.mr-chart-start-line {
+  stroke: #8aa9c0;
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+}
+
+.mr-chart-start-label {
+  fill: #52708f;
+  font:
+    750 9px/1 "Fredoka",
+    Inter,
+    sans-serif;
+  letter-spacing: 0.45px;
+}
+
 .mr-chart-even-line {
   stroke: #f19a38;
   stroke-width: 1.2;

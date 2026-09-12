@@ -736,10 +736,15 @@ export default function Home() {
       running = true;
       setChartLoading(true);
       try {
+        const roundDuration = Math.max(300, m.expiry - m.start);
+        const historicalContext = Math.min(
+          7_200,
+          Math.max(1_800, Math.round(roundDuration * 0.5)),
+        );
         const query = new URLSearchParams({
           pool: m.pool,
           asset: m.asset,
-          from: String(m.start),
+          from: String(Math.max(1, m.start - historicalContext)),
           to: String(
             Math.max(
               m.start,
@@ -768,7 +773,7 @@ export default function Home() {
     };
     setChart(null);
     void load();
-    const timer = setInterval(load, 8_000);
+    const timer = setInterval(load, 5_000);
     return () => {
       abort.abort();
       clearInterval(timer);

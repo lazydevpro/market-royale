@@ -134,6 +134,10 @@ export default function TradingChart({
   };
   const source =
     mode === "asset" ? (data?.underlying ?? []) : (data?.probability ?? []);
+  const chartStart =
+    mode === "asset" && source[0]?.time && source[0].time < start
+      ? source[0].time
+      : start;
   const fullDuration = Math.max(60, expiry - start);
   const minimumLiveWindow = Math.min(
     fullDuration,
@@ -151,7 +155,7 @@ export default function TradingChart({
           ),
         );
   const series = source
-    .filter((candle) => candle.time >= start && candle.time <= visibleEnd)
+    .filter((candle) => candle.time >= chartStart && candle.time <= visibleEnd)
     .map((candle) => ({
       time: candle.time,
       open: candle.open,
@@ -161,6 +165,10 @@ export default function TradingChart({
     }));
   const first = series[0];
   const last = series.at(-1);
+  const roundSeries = series.filter((point) => point.time >= start);
+  const roundFirst = roundSeries[0];
+  const roundOpen = roundFirst?.open ?? first?.open;
+  const roundRange = roundSeries.length ? roundSeries : series;
   const rangeValues = series.flatMap((point) => [point.low, point.high]);
   let min = Math.min(...rangeValues);
   let max = Math.max(...rangeValues);
@@ -183,8 +191,8 @@ export default function TradingChart({
   const plotHeight = HEIGHT - PAD.top - PAD.bottom;
   const x = (time: number) =>
     PAD.left +
-    ((Math.min(visibleEnd, Math.max(start, time)) - start) /
-      Math.max(1, visibleEnd - start)) *
+    ((Math.min(visibleEnd, Math.max(chartStart, time)) - chartStart) /
+      Math.max(1, visibleEnd - chartStart)) *
       plotWidth;
   const y = (value: number) =>
     PAD.top +
@@ -199,13 +207,14 @@ export default function TradingChart({
     ? `${line} L ${x(last.time).toFixed(2)} ${HEIGHT - PAD.bottom} L ${x(first.time).toFixed(2)} ${HEIGHT - PAD.bottom} Z`
     : "";
   const change =
-    first && last && first.open
-      ? ((last.close - first.open) / first.open) * 100
+    roundOpen && last
+      ? ((last.close - roundOpen) / roundOpen) * 100
       : 0;
-  const probabilityMove = first && last ? (last.close - first.open) * 100 : 0;
+  const probabilityMove =
+    roundOpen !== undefined && last ? (last.close - roundOpen) * 100 : 0;
   const winning = last
     ? mode === "asset"
-      ? last.close >= (first?.open ?? last.close)
+      ? last.close >= (roundOpen ?? last.close)
       : last.close >= 0.5
     : false;
   const currentX = x(Math.min(now, visibleEnd));
@@ -399,12 +408,12 @@ export default function TradingChart({
             <svg
               viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
               role="img"
-              aria-label={`${mode === "asset" ? asset + " price" : "UP probability"} from ${clock(start)} to ${clock(visibleEnd)}`}
+              aria-label={`${mode === "asset" ? asset + " price" : "UP probability"} from ${clock(chartStart)} to ${clock(visibleEnd)}`}
               preserveAspectRatio="xMidYMid meet"
             >
               <title>
                 {mode === "asset"
-                  ? `${asset} oracle price during this round`
+                  ? `${asset} oracle price with pre-round context`
                   : "UP contract probability during this round"}
               </title>
               <defs>
@@ -445,21 +454,39 @@ export default function TradingChart({
                   </g>
                 );
               })}
-              {mode === "asset" && first && (
+              {mode === "asset" && roundOpen !== undefined && (
                 <g>
                   <line
                     className="mr-chart-open-line"
                     x1={PAD.left}
                     x2={WIDTH - PAD.right}
-                    y1={y(first.open)}
-                    y2={y(first.open)}
+                    y1={y(roundOpen)}
+                    y2={y(roundOpen)}
                   />
                   <text
                     className="mr-chart-open-label"
                     x={PAD.left + 8}
-                    y={y(first.open) - 7}
+                    y={y(roundOpen) - 7}
                   >
-                    ROUND OPEN {money(first.open)}
+                    ROUND OPEN {money(roundOpen)}
+                  </text>
+                </g>
+              )}
+              {chartStart < start && start <= visibleEnd && (
+                <g>
+                  <line
+                    className="mr-chart-start-line"
+                    x1={x(start)}
+                    x2={x(start)}
+                    y1={PAD.top}
+                    y2={HEIGHT - PAD.bottom}
+                  />
+                  <text
+                    className="mr-chart-start-label"
+                    x={x(start) + 7}
+                    y={PAD.top + 12}
+                  >
+                    ROUND START
                   </text>
                 </g>
               )}
@@ -514,7 +541,8 @@ export default function TradingChart({
                 />
               )}
               <text className="mr-chart-time" x={PAD.left} y={HEIGHT - 7}>
-                {clock(start)}
+                {chartStart < start ? "CONTEXT " : ""}
+                {clock(chartStart)}
               </text>
               <text
                 className="mr-chart-time"
@@ -649,20 +677,20 @@ export default function TradingChart({
         <span>
           <small>ROUND OPEN</small>
           <strong>
-            {first
+            {roundOpen !== undefined
               ? mode === "asset"
-                ? money(first.open)
-                : `${(first.open * 100).toFixed(1)}¢`
+                ? money(roundOpen)
+                : `${(roundOpen * 100).toFixed(1)}¢`
               : "—"}
           </strong>
         </span>
         <span>
           <small>ROUND HIGH / LOW</small>
           <strong>
-            {first
+            {roundRange.length
               ? mode === "asset"
-                ? `${money(Math.max(...series.map((p) => p.high)))} / ${money(Math.min(...series.map((p) => p.low)))}`
-                : `${(Math.max(...series.map((p) => p.high)) * 100).toFixed(1)}¢ / ${(Math.min(...series.map((p) => p.low)) * 100).toFixed(1)}¢`
+                ? `${money(Math.max(...roundRange.map((p) => p.high)))} / ${money(Math.min(...roundRange.map((p) => p.low)))}`
+                : `${(Math.max(...roundRange.map((p) => p.high)) * 100).toFixed(1)}¢ / ${(Math.min(...roundRange.map((p) => p.low)) * 100).toFixed(1)}¢`
               : "—"}
           </strong>
         </span>

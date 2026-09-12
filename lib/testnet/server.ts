@@ -314,16 +314,65 @@ export async function marketChart(
   from: number,
   to: number,
 ) {
-  const [probability, underlying] = await Promise.allSettled([
-    dreamdexData.client.getCandles(pool, 60, { from, to, limit: 240 }),
-    dreamdexData.client.fetchPriceCandles(asset, "M1", {
-      from,
-      to,
-      limit: 240,
-    }),
-  ]);
-  if (probability.status === "rejected" && underlying.status === "rejected")
+  const fineFrom = Math.max(from, to - 180);
+  const [probability, underlyingCandles, underlyingTicks] =
+    await Promise.allSettled([
+      dreamdexData.client.getCandles(pool, 60, { from, to, limit: 480 }),
+      dreamdexData.client.fetchPriceCandles(asset, "M1", {
+        from,
+        to,
+        limit: 480,
+      }),
+      dreamdexData.client.fetchPriceHistory(asset, {
+        from: fineFrom,
+        to,
+        limit: 240,
+      }),
+    ]);
+  if (
+    probability.status === "rejected" &&
+    underlyingCandles.status === "rejected" &&
+    underlyingTicks.status === "rejected"
+  )
     throw new Error("DreamDEX chart feeds are unavailable.");
+  const candles =
+    underlyingCandles.status === "fulfilled"
+      ? underlyingCandles.value.map((candle) => ({
+          time: candle.bucketStart,
+          open: candle.open,
+          high: candle.high,
+          low: candle.low,
+          close: candle.close,
+          ema: candle.emaClose,
+          updates: candle.count,
+        }))
+      : [];
+  const ticks =
+    underlyingTicks.status === "fulfilled"
+      ? [
+          ...new Map(
+            underlyingTicks.value
+              .map((point) => ({
+                time: point.blockTimestamp,
+                open: point.price,
+                high: point.price,
+                low: point.price,
+                close: point.price,
+                ema: point.ema,
+                updates: 1,
+              }))
+              .sort((a, b) => a.time - b.time)
+              .map((point) => [point.time, point]),
+          ).values(),
+        ]
+      : [];
+  const firstFineBucket = ticks.length
+    ? Math.floor(ticks[0].time / 60) * 60
+    : Number.POSITIVE_INFINITY;
+  const underlying = [
+    ...candles.filter((candle) => candle.time < firstFineBucket),
+    ...ticks,
+  ];
   return {
     pool,
     asset,
@@ -341,24 +390,14 @@ export async function marketChart(
             trades: candle.tradeCount,
           }))
         : [],
-    underlying:
-      underlying.status === "fulfilled"
-        ? underlying.value.map((candle) => ({
-            time: candle.bucketStart,
-            open: candle.open,
-            high: candle.high,
-            low: candle.low,
-            close: candle.close,
-            ema: candle.emaClose,
-            updates: candle.count,
-          }))
-        : [],
+    underlying,
     probabilityError:
       probability.status === "rejected"
         ? "Probability history is temporarily unavailable."
         : null,
     underlyingError:
-      underlying.status === "rejected"
+      underlyingCandles.status === "rejected" &&
+      underlyingTicks.status === "rejected"
         ? `${asset} oracle history is temporarily unavailable.`
         : null,
   };
